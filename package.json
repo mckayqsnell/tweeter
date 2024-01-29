@@ -1,0 +1,13 @@
+{
+  "name": "tweeter",
+  "version": "1.0.0",
+  "workspaces": [
+    "tweeter-shared",
+    "tweeter-web"
+  ],
+  "author": "JWilkerson",
+  "license": "ISC",
+  "dependencies": {
+    "vite-plugin-dts": "^3.3.1"
+  }
+}
