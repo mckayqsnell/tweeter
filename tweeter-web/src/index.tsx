@@ -14,8 +14,8 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <UserInfoProvider>
-      <ToastProvider>
+    <UserInfoProvider> {/* This is the top-level context provider --> where I'll add hooks for users --> user context */}
+      <ToastProvider> {/* toast context*/}
         <App />
       </ToastProvider>
     </UserInfoProvider>
