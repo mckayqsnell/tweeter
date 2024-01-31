@@ -57,3 +57,5 @@ const useUserNavigation = (): UserNavigation => {
     getUser: getUser,
   };
 };
+
+export default useUserNavigation;
