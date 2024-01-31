@@ -12,10 +12,9 @@ import Login from "./components/authentication/login/Login";
 import Register from "./components/authentication/register/Register";
 import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
-import FeedScroller from "./components/mainLayout/FeedScroller";
-import StoryScroller from "./components/mainLayout/StoryScroller";
-import { AuthToken, User, FakeData } from "tweeter-shared";
+import { AuthToken, User, FakeData, Status } from "tweeter-shared";
 import UserItemScroller from "./components/mainLayout/UserItemScroller";
+import StatusScroller from "./components/mainLayout/StatusScroller";
 
 const App = () => {
   const { currentUser, authToken } = useContext(UserInfoContext);
@@ -59,12 +58,48 @@ const AuthenticatedRoutes = () => {
     return FakeData.instance.getPageOfUsers(lastItem, pageSize, user);
   };
 
+  const loadMoreStoryItems = async (
+    authToken: AuthToken,
+    user: User,
+    pageSize: number,
+    lastItem: Status | null
+  ): Promise<[Status[], boolean]> => {
+    // TODO: Replace with the result of calling server
+    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+  };
+
+  const loadMoreFeedItems = async (
+    authToken: AuthToken,
+    user: User,
+    pageSize: number,
+    lastItem: Status | null
+  ): Promise<[Status[], boolean]> => {
+    // TODO: Replace with the result of calling server
+    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+  };
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route index element={<Navigate to="/feed" />} />
-        <Route path="feed" element={<FeedScroller />} />
-        <Route path="story" element={<StoryScroller />} />
+        <Route
+          path="feed"
+          element={
+            <StatusScroller
+              loadItems={loadMoreFeedItems}
+              itemDescription="feed"
+            />
+          }
+        />
+        <Route
+          path="story"
+          element={
+            <StatusScroller
+              loadItems={loadMoreStoryItems}
+              itemDescription="story"
+            />
+          }
+        />
         <Route
           path="following"
           element={

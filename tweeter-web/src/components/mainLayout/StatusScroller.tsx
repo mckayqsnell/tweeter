@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserInfoContext } from "../userInfo/UserInfoProvider";
-import { AuthToken, FakeData, Status, User } from "tweeter-shared";
+import { AuthToken, Status, User } from "tweeter-shared";
 import { useState, useRef, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useToastListener from "../toaster/ToastListenerHook";
@@ -8,7 +8,18 @@ import StatusItem from "../statusItem/StatusItem";
 
 export const PAGE_SIZE = 10;
 
-const FeedScroller = () => {
+/* Define the two things in here that vary across the versions of this component (Feed, and Story) */
+interface Props {
+  loadItems: (
+    authToken: AuthToken,
+    user: User,
+    pageSize: number,
+    lastItem: Status | null
+  ) => Promise<[Status[], boolean]>;
+  itemDescription: string;
+}
+
+const StatusScroller = (props: Props) => {
   const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<Status[]>([]);
   const [hasMoreItems, setHasMoreItems] = useState(true);
@@ -34,7 +45,7 @@ const FeedScroller = () => {
   const loadMoreItems = async () => {
     try {
       if (hasMoreItems) {
-        let [newItems, hasMore] = await loadMoreFeedItems(
+        let [newItems, hasMore] = await props.loadItems(
           authToken!,
           displayedUser!,
           PAGE_SIZE,
@@ -47,19 +58,9 @@ const FeedScroller = () => {
       }
     } catch (error) {
       displayErrorMessage(
-        `Failed to load feed items because of exception: ${error}`
+        `Failed to load ${props.itemDescription} items because of exception: ${error}`
       );
     }
-  };
-
-  const loadMoreFeedItems = async (
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: Status | null
-  ): Promise<[Status[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
   };
 
   return (
@@ -77,7 +78,6 @@ const FeedScroller = () => {
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
             <div className="col bg-light mx-0 px-0">
-              {/* StatusItem also constains Post component*/}
               <StatusItem value={item} />
             </div>
           </div>
@@ -87,4 +87,6 @@ const FeedScroller = () => {
   );
 };
 
-export default FeedScroller;
+StatusScroller.propTypes = {};
+
+export default StatusScroller;

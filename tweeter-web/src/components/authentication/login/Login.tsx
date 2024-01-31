@@ -14,8 +14,8 @@ interface Props {
 }
 
 const Login = (props: Props) => {
-  const [alias] = useState("");
-  const [password] = useState("");
+  const [alias, setAlias] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
@@ -65,7 +65,10 @@ const Login = (props: Props) => {
     return (
       <>
         {/* Authentication fields for alias and password (same for login) */}
-        <AuthenticationFields />
+        <AuthenticationFields
+          setAlias={(event) => setAlias(event.target.value)}
+          setPassword={(event) => setPassword(event.target.value)}
+        />
       </>
     );
   };

@@ -2,9 +2,12 @@ import { useState } from "react";
 
 /* This component is just for the alias and password fields because they are duplicated across login and register */
 
-const AuthenticationFields = () => {
-  const [, setAlias] = useState("");
-  const [, setPassword] = useState("");
+interface Props {
+  setAlias: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setPassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const AuthenticationFields = (props: Props) => {
 
   return (
     <>
@@ -15,7 +18,7 @@ const AuthenticationFields = () => {
           size={50}
           id="aliasInput"
           placeholder="name@example.com"
-          onChange={(event) => setAlias(event.target.value)}
+          onChange={(event) => props.setAlias(event)}
         />
         <label htmlFor="aliasInput">Alias</label>
       </div>
@@ -25,7 +28,7 @@ const AuthenticationFields = () => {
           className="form-control bottom"
           id="passwordInput"
           placeholder="Password"
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(event) => props.setPassword(event)}
         />
         <label htmlFor="passwordInput">Password</label>
       </div>
