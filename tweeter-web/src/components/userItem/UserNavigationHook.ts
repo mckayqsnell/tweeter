@@ -4,8 +4,6 @@ import useToastListener from "../toaster/ToastListenerHook";
 
 interface UserNavigation {
   navigateToUser: (event: React.MouseEvent) => Promise<void>; // Returning a promise indicates that is an async function
-  extractAlias: (value: string) => string; // this is returning a substring of the input string (the alias)
-  getUser: (authToken: AuthToken, alias: string) => Promise<User | null>; // Returning a promise indicates that is an async function
 }
 
 const useUserNavigation = (): UserNavigation => {
@@ -36,25 +34,22 @@ const useUserNavigation = (): UserNavigation => {
     }
   };
 
-  const extractAlias: UserNavigation["extractAlias"] = (
-    value: string
-  ): string => {
+  const extractAlias = (value: string): string => {
     let index = value.indexOf("@");
     return value.substring(index);
   };
 
-  const getUser: UserNavigation["getUser"] = async (
+  const getUser = async (
     authToken: AuthToken,
     alias: string
   ): Promise<User | null> => {
+    // TODO: Replace with the result of calling server
     return FakeData.instance.findUserByAlias(alias);
   };
 
   // now that we have defined the functions, we can return them in the UserNavigation object
   return {
     navigateToUser: navigateToUser,
-    extractAlias: extractAlias,
-    getUser: getUser,
   };
 };
 
