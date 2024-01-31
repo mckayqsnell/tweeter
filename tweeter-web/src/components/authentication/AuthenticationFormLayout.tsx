@@ -38,8 +38,9 @@ const AuthenticationFormLayout = (props: Props) => {
 
             <h1 className="h4 mb-3 fw-normal">Or</h1>
             <h1 className="h5 mb-3 fw-normal">{props.oAuthHeading}</h1>
-
-            <div className="text-center mb-3">
+            
+            {/* Move this to its own component */}
+            <div className="text-center mb-3"> 
               <button
                 type="button"
                 className="btn btn-link btn-floating mx-1"
