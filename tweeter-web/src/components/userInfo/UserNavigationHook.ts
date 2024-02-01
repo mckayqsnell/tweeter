@@ -1,5 +1,5 @@
 import { AuthToken, FakeData, User } from "tweeter-shared";
-import useUserInfo from "../userInfo/UserInfoHook";
+import useUserInfo from "./UserInfoHook";
 import useToastListener from "../toaster/ToastListenerHook";
 
 interface UserNavigation {
