@@ -1,6 +1,5 @@
 import {Status, Type } from "tweeter-shared";
 import {Link} from "react-router-dom";
-import useToastListener from "../toaster/ToastListenerHook";
 import useNavigateToUser from "../userInfo/UserNavigationHook";
 
 interface Props {
@@ -9,7 +8,6 @@ interface Props {
 
 const Post = (props: Props) => {
   const { navigateToUser } = useNavigateToUser();
-  const { displayErrorMessage } = useToastListener();
 
   return (
     <>
