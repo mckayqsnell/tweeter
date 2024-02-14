@@ -15,8 +15,9 @@ const useUserNavigation = (): UserNavigation => {
   const navigateToUser: UserNavigation["navigateToUser"] = async (
     event: React.MouseEvent
   ): Promise<void> => {
-    event.preventDefault();
+    event.preventDefault(); //don't do the default HTTP request, do my code
 
+    // call a presenter here. Moves all this to a presenter
     try {
       let alias = extractAlias(event.target.toString());
 

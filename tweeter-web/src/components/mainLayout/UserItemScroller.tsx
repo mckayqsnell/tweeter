@@ -1,35 +1,26 @@
-import { AuthToken, User } from "tweeter-shared";
+import { User } from "tweeter-shared";
 import { useState, useRef, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import UserItem from "../userItem/UserItem";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
-
-export const PAGE_SIZE = 10;
+import {
+  UserItemPresenter,
+  UserItemView,
+} from "../../presenter/UserItemPresenter";
 
 interface Props {
-  loadItems: (
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: User | null
-  ) => Promise<[User[], boolean]>;
-  itemDescription: string;
+  presenterGenerator: (view: UserItemView) => UserItemPresenter;
 }
 
 const UserItemScroller = (props: Props) => {
   const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<User[]>([]);
-  const [hasMoreItems, setHasMoreItems] = useState(true);
-  const [lastItem, setLastItem] = useState<User | null>(null);
 
   // Required to allow the addItems method to see the current value of 'items'
   // instead of the value from when the closure was created.
   const itemsReference = useRef(items);
   itemsReference.current = items;
-
-  const addItems = (newItems: User[]) =>
-    setItems([...itemsReference.current, ...newItems]);
 
   const { displayedUser, authToken } = useUserInfo();
 
@@ -39,25 +30,18 @@ const UserItemScroller = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadMoreItems = async () => {
-    try {
-      if (hasMoreItems) {
-        let [newItems, hasMore] = await props.loadItems(
-          authToken!,
-          displayedUser!,
-          PAGE_SIZE,
-          lastItem
-        );
+  const listener: UserItemView = {
+    addItems: (newItems: User[]) =>
+      setItems([...itemsReference.current, ...newItems]),
+    displayErrorMessage: displayErrorMessage,
+  };
 
-        setHasMoreItems(hasMore);
-        setLastItem(newItems[newItems.length - 1]);
-        addItems(newItems);
-      }
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to load ${props.itemDescription} because of exception: ${error}`
-      );
-    }
+  // So that the presenter isn't reset every time the component is rerendered
+  const [presenter] = useState(props.presenterGenerator(listener));
+
+  const loadMoreItems = async () => {
+    // ! -> means we can't pass a null to it even though the declaration says it can.
+    presenter.loadMoreItems(authToken!, displayedUser!);
   };
 
   return (
@@ -66,7 +50,7 @@ const UserItemScroller = (props: Props) => {
         className="pr-0 mr-0"
         dataLength={items.length}
         next={loadMoreItems}
-        hasMore={hasMoreItems}
+        hasMore={presenter.hasMoreItems}
         loader={<h4>Loading...</h4>}
       >
         {items.map((item, index) => (
