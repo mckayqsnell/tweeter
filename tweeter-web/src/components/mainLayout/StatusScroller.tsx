@@ -4,34 +4,22 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import useToastListener from "../toaster/ToastListenerHook";
 import StatusItem from "../statusItem/StatusItem";
 import useUserInfo from "../userInfo/UserInfoHook";
+import { StatusItemPresenter, StatusItemView } from "../../presenter/StatusItemPresenter";
 
-export const PAGE_SIZE = 10;
-
-/* Define the two things in here that vary across the versions of this component (Feed, and Story) */
 interface Props {
-  loadItems: (
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: Status | null
-  ) => Promise<[Status[], boolean]>;
-  itemDescription: string;
+  presenterGenerator: (view: StatusItemView) => StatusItemPresenter;
 }
 
 const StatusScroller = (props: Props) => {
   const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<Status[]>([]);
-  const [hasMoreItems, setHasMoreItems] = useState(true);
-  const [lastItem, setLastItem] = useState<Status | null>(null);
 
   // Required to allow the addItems method to see the current value of 'items'
   // instead of the value from when the closure was created.
-  const itemsReference = useRef(items);
+  const itemsReference = useRef(items); // DON't MOVE THIS
   itemsReference.current = items;
 
-  const addItems = (newItems: Status[]) =>
-    setItems([...itemsReference.current, ...newItems]);
-
+  // This should not be moved to a presenter because it is a hook
   const { displayedUser, authToken } =
     useUserInfo();
 
@@ -41,25 +29,17 @@ const StatusScroller = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadMoreItems = async () => {
-    try {
-      if (hasMoreItems) {
-        let [newItems, hasMore] = await props.loadItems(
-          authToken!,
-          displayedUser!,
-          PAGE_SIZE,
-          lastItem
-        );
+  const listener: StatusItemView  = {
+    addItems: (newItems: Status[]) => setItems([...itemsReference.current, ...newItems]),
+    displayErrorMessage: displayErrorMessage,
+  }
 
-        setHasMoreItems(hasMore);
-        setLastItem(newItems[newItems.length - 1]);
-        addItems(newItems);
-      }
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to load ${props.itemDescription} items because of exception: ${error}`
-      );
-    }
+  // To prevent the presenter from being recreated on every render
+  const [presenter] = useState(props.presenterGenerator(listener));
+
+  const loadMoreItems = async () => {
+    // ! is used to tell TypeScript that the value is not null
+    presenter.loadMoreItems(authToken!, displayedUser!);
   };
 
   return (
@@ -68,7 +48,7 @@ const StatusScroller = (props: Props) => {
         className="pr-0 mr-0"
         dataLength={items.length}
         next={loadMoreItems}
-        hasMore={hasMoreItems}
+        hasMore={presenter.hasMoreItems}
         loader={<h4>Loading...</h4>}
       >
         {items.map((item, index) => (
@@ -86,6 +66,6 @@ const StatusScroller = (props: Props) => {
   );
 };
 
-StatusScroller.propTypes = {};
+//StatusScroller.propTypes = {};
 
 export default StatusScroller;
