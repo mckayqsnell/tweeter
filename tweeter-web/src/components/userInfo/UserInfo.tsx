@@ -22,6 +22,7 @@ const UserInfo = () => {
 
   const [presenter] = useState(new UserInfoPresenter(listener));
 
+  // this affects how the UI is displayed so leaving it here
   if (!displayedUser) {
     setDisplayedUser(currentUser!);
   }
