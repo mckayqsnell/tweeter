@@ -19,6 +19,8 @@ import { FollowersPresenter } from "./presenter/FollowersPresenter";
 import { StatusItemView } from "./presenter/StatusItemPresenter";
 import { FeedPresenter } from "./presenter/FeedPresenter";
 import { StoryPresenter } from "./presenter/StoryPresenter";
+import { RegisterPresenter } from "./presenter/RegisterPresenter";
+import { RegisterView } from "./presenter/RegisterPresenter";
 
 const App = () => {
   const { currentUser, authToken } = useUserInfo();
