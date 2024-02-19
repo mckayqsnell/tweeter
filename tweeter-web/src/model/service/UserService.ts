@@ -2,8 +2,7 @@ import { AuthToken, FakeData, User } from "tweeter-shared";
 import { Buffer } from "buffer";
 
 export class UserService {
-  
-    public async register(
+  public async register(
     firstName: string,
     lastName: string,
     alias: string,
@@ -19,6 +18,20 @@ export class UserService {
 
     if (user === null) {
       throw new Error("Invalid registration");
+    }
+
+    return [user, FakeData.instance.authToken];
+  }
+
+  public async login (
+    alias: string,
+    password: string
+  ): Promise<[User, AuthToken]> {
+    // TODO: Replace with the result of calling the server
+    let user = FakeData.instance.firstUser;
+
+    if (user === null) {
+      throw new Error("Invalid alias or password");
     }
 
     return [user, FakeData.instance.authToken];

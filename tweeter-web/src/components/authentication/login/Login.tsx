@@ -7,12 +7,14 @@ import { AuthToken, FakeData, User } from "tweeter-shared";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
+import { LoginPresenter } from "../../../presenter/LoginPresenter";
 
 interface Props {
   originalUrl?: string;
 }
 
 const Login = (props: Props) => {
+  // can't pull these into the presenter because they dictate the UI
   const [alias, setAlias] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -28,37 +30,13 @@ const Login = (props: Props) => {
     return !alias || !password;
   };
 
-  const doLogin = async () => {
-    try {
-      let [user, authToken] = await login(alias, password);
+  const listener = {
+    updateUserInfo: updateUserInfo,
+    displayErrorMessage: displayErrorMessage,
+    navigate: navigate,
+  }
 
-      updateUserInfo(user, user, authToken, rememberMeRef.current);
-
-      if (!!props.originalUrl) {
-        navigate(props.originalUrl);
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to log user in because of exception: ${error}`
-      );
-    }
-  };
-
-  const login = async (
-    alias: string,
-    password: string
-  ): Promise<[User, AuthToken]> => {
-    // TODO: Replace with the result of calling the server
-    let user = FakeData.instance.firstUser;
-
-    if (user === null) {
-      throw new Error("Invalid alias or password");
-    }
-
-    return [user, FakeData.instance.authToken];
-  };
+  const [presenter] = useState(new LoginPresenter(listener));
 
   const inputFieldGenerator = () => {
     return (
@@ -89,7 +67,7 @@ const Login = (props: Props) => {
       switchAuthenticationMethodGenerator={switchAuthenticationMethodGenerator}
       setRememberMe={setRememberMe}
       submitButtonDisabled={checkSubmitButtonStatus}
-      submit={doLogin}
+      submit={() => presenter.doLogin(alias, password, rememberMeRef, props.originalUrl)}
     />
   );
 };
