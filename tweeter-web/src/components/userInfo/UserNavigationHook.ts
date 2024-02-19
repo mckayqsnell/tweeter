@@ -1,6 +1,6 @@
-import { AuthToken, FakeData, User } from "tweeter-shared";
 import useUserInfo from "./UserInfoHook";
 import useToastListener from "../toaster/ToastListenerHook";
+import { UserNavigationPresenter, UserNavigationView } from "../../presenter/UserNavigationPresenter";
 
 interface UserNavigation {
   navigateToUser: (event: React.MouseEvent) => Promise<void>; // Returning a promise indicates that is an async function
@@ -10,6 +10,13 @@ const useUserNavigation = (): UserNavigation => {
   const { setDisplayedUser, currentUser, authToken } = useUserInfo(); // hook that I made to abstract the user context
   const { displayErrorMessage } = useToastListener();
 
+  const listener: UserNavigationView = {
+    setDisplayedUser: setDisplayedUser,
+    displayErrorMessage: displayErrorMessage,
+  }
+  // don't need to use useState here because we are in a hook not a component
+  const presenter = new UserNavigationPresenter(listener);
+
   /* Function definitions for what we are about to return in the UserNavigation Object. */
 
   const navigateToUser: UserNavigation["navigateToUser"] = async (
@@ -17,35 +24,7 @@ const useUserNavigation = (): UserNavigation => {
   ): Promise<void> => {
     event.preventDefault(); //don't do the default HTTP request, do my code
 
-    // call a presenter here. Moves all this to a presenter
-    try {
-      let alias = extractAlias(event.target.toString());
-
-      let user = await getUser(authToken!, alias);
-
-      if (!!user) {
-        if (currentUser!.equals(user)) {
-          setDisplayedUser(currentUser!);
-        } else {
-          setDisplayedUser(user);
-        }
-      }
-    } catch (error) {
-      displayErrorMessage(`Failed to get user because of exception: ${error}`);
-    }
-  };
-
-  const extractAlias = (value: string): string => {
-    let index = value.indexOf("@");
-    return value.substring(index);
-  };
-
-  const getUser = async (
-    authToken: AuthToken,
-    alias: string
-  ): Promise<User | null> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.findUserByAlias(alias);
+    await presenter.displayUser(event, authToken!, currentUser!);
   };
 
   // now that we have defined the functions, we can return them in the UserNavigation object

@@ -3,49 +3,38 @@ import { useState } from "react";
 import { AuthToken, Status } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
+import { PostStatusPresenter, PostStatusView } from "../../presenter/PostStatusPresenter";
 
 const PostStatus = () => {
   const { displayErrorMessage, displayInfoMessage, clearLastInfoMessage } =
     useToastListener();
-
   const { currentUser, authToken } = useUserInfo();
   const [post, setPost] = useState("");
 
+  const listener: PostStatusView = {
+    displayErrorMessage: displayErrorMessage,
+    displayInfoMessage: displayInfoMessage,
+    clearLastInfoMessage: clearLastInfoMessage,
+    setPost: setPost,
+  };
+
+  // so that the presenter is not recreated every time the component is rendered
+  const [presenter] = useState(new PostStatusPresenter(listener));
+  
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
 
-    try {
-      displayInfoMessage("Posting status...", 0);
-
-      let status = new Status(post, currentUser!, Date.now());
-
-      await postStatus(authToken!, status);
-
-      clearLastInfoMessage();
-      setPost("");
-      displayInfoMessage("Status posted!", 2000);
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to post the status because of exception: ${error}`
-      );
-    }
+    // move this to a presenter
+    await presenter.postStatus(post, currentUser!, authToken!);
   };
 
-  const postStatus = async (
-    authToken: AuthToken,
-    newStatus: Status
-  ): Promise<void> => {
-    // Pause so we can see the logging out message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server to post the status
-  };
-
+  // leave this here because it is a UI function
   const clearPost = (event: React.MouseEvent) => {
     event.preventDefault();
     setPost("");
   };
 
+  // leave this here because it is a UI function
   const checkButtonStatus: () => boolean = () => {
     return !post.trim() || !authToken || !currentUser;
   };
