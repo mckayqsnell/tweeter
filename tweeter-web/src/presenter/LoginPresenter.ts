@@ -1,29 +1,36 @@
 import { AuthToken, User } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
+import { Presenter, View } from "./Presenter";
 
-interface LoginView {
-    updateUserInfo: (
-        user: User,
-        userToUpdate: User,
-        authToken: AuthToken,
-        rememberMe: boolean
-    ) => void;
-    displayErrorMessage: (message: string) => void;
-    navigate: (path: string) => void;
-    
+interface LoginView extends View {
+  updateUserInfo: (
+    user: User,
+    userToUpdate: User,
+    authToken: AuthToken,
+    rememberMe: boolean
+  ) => void;
+  navigate: (path: string) => void;
 }
 
-export class LoginPresenter {
+export class LoginPresenter extends Presenter {
   private service: UserService;
-  private view: LoginView;
 
   public constructor(view: LoginView) {
+    super(view);
     this.service = new UserService();
-    this.view = view;
   }
 
-  public async doLogin(alias: string, password: string, rememberMeRef: React.MutableRefObject<boolean>, originalUrl?: string) {
-    try {
+  protected get view(): LoginView {
+    return super.view as LoginView;
+  }
+
+  public async doLogin(
+    alias: string,
+    password: string,
+    rememberMeRef: React.MutableRefObject<boolean>,
+    originalUrl?: string
+  ) {
+    this.doFailureReportingOperation(async () => {
       let [user, authToken] = await this.service.login(alias, password);
 
       this.view.updateUserInfo(user, user, authToken, rememberMeRef.current);
@@ -33,10 +40,6 @@ export class LoginPresenter {
       } else {
         this.view.navigate("/");
       }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to log user in because of exception: ${error}`
-      );
-    }
+    }, "log user in");
   }
 }

@@ -1,23 +1,24 @@
 import { AuthToken, User } from "tweeter-shared";
 import { FollowService } from "../model/service/FollowService";
+import { Presenter, MessageView } from "./Presenter";
 
-export interface UserInfoView {
-  displayErrorMessage: (message: string) => void;
+export interface UserInfoView extends MessageView {
   setUserInfo: (user: User) => void;
-  displayInfoMessage: (message: string, duration: number) => void;
-    clearLastInfoMessage: () => void;
 }
 
-export class UserInfoPresenter {
+export class UserInfoPresenter extends Presenter {
   private service: FollowService;
-  private view: UserInfoView;
   private _isFollower: boolean = false;
   private _followeesCount: number = -1;
   private _followersCount: number = -1;
 
   public constructor(view: UserInfoView) {
+    super(view);
     this.service = new FollowService();
-    this.view = view;
+  }
+
+  protected get view(): UserInfoView {
+    return super.view as UserInfoView;
   }
 
   public async setIsFollowerStatus(
@@ -25,7 +26,7 @@ export class UserInfoPresenter {
     currentUser: User,
     displayedUser: User
   ) {
-    try {
+    this.doFailureReportingOperation(async () => {
       if (currentUser === displayedUser) {
         this.isFollower = false;
       } else {
@@ -35,42 +36,33 @@ export class UserInfoPresenter {
           displayedUser!
         );
       }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to determine follower status because of exception: ${error}`
-      );
-    }
+    }, "determine follower status");
   }
 
   public async setNumbFollowees(authToken: AuthToken, displayedUser: User) {
-    try {
+    this.doFailureReportingOperation(async () => {
       this.followeesCount = await this.service.getFolloweesCount(
         authToken,
         displayedUser
       );
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to get followees count because of exception: ${error}`
-      );
-    }
+    }, "get followees count");
   }
 
   public async setNumbFollowers(authToken: AuthToken, displayedUser: User) {
-    try {
+    this.doFailureReportingOperation(async () => {
       this.followersCount = await this.service.getFollowersCount(
         authToken,
         displayedUser
       );
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to get followers count because of exception: ${error}`
-      );
-    }
+    }, "get followers count");
   }
 
   public async followUser(displayedUser: User, authToken: AuthToken) {
-    try {
-      this.view.displayInfoMessage(`Adding ${displayedUser!.name} to followers...`, 0);
+    this.doFailureReportingOperation(async () => {
+      this.view.displayInfoMessage(
+        `Adding ${displayedUser!.name} to followers...`,
+        0
+      );
 
       let [followersCount, followeesCount] = await this.service.follow(
         authToken!,
@@ -82,15 +74,11 @@ export class UserInfoPresenter {
       this.isFollower = true;
       this.followersCount = followersCount;
       this.followeesCount = followeesCount;
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to follow user because of exception: ${error}`
-      );
-    }
+    }, "follow user");
   }
 
   public async unfollowUser(displayedUser: User, authToken: AuthToken) {
-    try {
+    this.doFailureReportingOperation(async () => {
       this.view.displayInfoMessage(
         `Removing ${displayedUser!.name} from followers...`,
         0
@@ -106,11 +94,7 @@ export class UserInfoPresenter {
       this.isFollower = false;
       this.followersCount = followersCount;
       this.followeesCount = followeesCount;
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to unfollow user because of exception: ${error}`
-      );
-    }
+    }, "unfollow user");
   }
 
   public get isFollower(): boolean {
