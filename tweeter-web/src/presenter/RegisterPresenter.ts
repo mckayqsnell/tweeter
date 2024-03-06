@@ -1,16 +1,9 @@
 import { AuthToken, User } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
 import { Buffer } from "buffer";
-import { Presenter, View } from "./Presenter";
+import { AuthView, Presenter, View } from "./Presenter";
 
-export interface RegisterView extends View {
-  updateUserInfo: (
-    user: User,
-    userToUpdate: User,
-    authToken: AuthToken,
-    rememberMe: boolean
-  ) => void;
-  navigate: (path: string) => void;
+export interface RegisterView extends AuthView {
   setImageUrl: (url: string) => void;
 }
 
