@@ -30,16 +30,16 @@ export class LoginPresenter extends Presenter {
     rememberMeRef: React.MutableRefObject<boolean>,
     originalUrl?: string
   ) {
-    this.doFailureReportingOperation(async () => {
-      let [user, authToken] = await this.service.login(alias, password);
+    const authFunc = () => this.service.login(alias, password);
+    const updateViewAfterAuth = (
+      user: User,
+      authToken: AuthToken,
+      rememberMe: boolean
+    ) => this.view.updateUserInfo(user, user, authToken, rememberMe);
+    const navFunc = (path: string) => this.view.navigate(path);
+    
+    const navigationPath = originalUrl ? originalUrl : "/";
 
-      this.view.updateUserInfo(user, user, authToken, rememberMeRef.current);
-
-      if (!!originalUrl) {
-        this.view.navigate(originalUrl);
-      } else {
-        this.view.navigate("/");
-      }
-    }, "log user in");
+    await this.doAuthOperation(authFunc, updateViewAfterAuth, navFunc, rememberMeRef.current, navigationPath);
   }
 }

@@ -35,17 +35,22 @@ export class RegisterPresenter extends Presenter {
     imageBytes: Uint8Array,
     rememberMeRef: React.MutableRefObject<boolean>
   ) {
-    this.doFailureReportingOperation(async () => {
-      let [user, authToken] = await this.serivce.register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        imageBytes
-      );
-      this.view.updateUserInfo(user, user, authToken, rememberMeRef.current);
-      this.view.navigate("/");
-    }, "register user");
+    const authFunc = () =>
+      this.serivce.register(firstName, lastName, alias, password, imageBytes);
+    const updateViewAfterAuth = (
+      user: User,
+      authToken: AuthToken,
+      rememberMe: boolean
+    ) => this.view.updateUserInfo(user, user, authToken, rememberMe);
+    const navFunc = (path: string) => this.view.navigate(path);
+
+    await this.doAuthOperation(
+      authFunc,
+      updateViewAfterAuth,
+      navFunc,
+      rememberMeRef.current,
+      "/"
+    );
   }
 
   public handleImageFile(file: File | undefined) {
