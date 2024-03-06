@@ -1,5 +1,5 @@
 import { AuthToken, Status, User } from "tweeter-shared";
-import { StatusItemPresenter, StatusItemView } from "./StatusItemPresenter";
+import { StatusItemPresenter} from "./StatusItemPresenter";
 import { PAGE_SIZE } from "./PagedItemPresenter";
 
 export class StoryPresenter extends StatusItemPresenter {
