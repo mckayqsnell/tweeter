@@ -7,14 +7,18 @@ export interface PostStatusView extends MessageView {
 }
 
 export class PostStatusPresenter extends Presenter {
-  private service: StatusService;
+  private _statusService: StatusService;
 
   public constructor(view: PostStatusView) {
     super(view);
-    this.service = new StatusService();
+    this._statusService = new StatusService();
   }
 
-  protected get view(): PostStatusView {
+  public get statusService(): StatusService {
+    return this._statusService;
+  }
+
+  public get view(): PostStatusView {
     return super.view as PostStatusView;
   }
 
@@ -23,12 +27,12 @@ export class PostStatusPresenter extends Presenter {
     currentUser: User,
     authToken: AuthToken
   ) {
-    this.doFailureReportingOperation(async () => {
-      this.view.displayInfoMessage("Posting status...", 0);
+    this.view.displayInfoMessage("Posting status...", 0);
 
+    this.doFailureReportingOperation(async () => {
       let status = new Status(post, currentUser!, Date.now());
 
-      await this.service.postStatus(authToken!, status);
+      await this.statusService.postStatus(authToken!, status);
 
       this.view.clearLastInfoMessage();
       this.view.setPost("");

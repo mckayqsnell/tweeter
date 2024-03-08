@@ -26,7 +26,7 @@ export class Presenter {
     this._view = view;
   }
 
-  protected get view() {
+  protected get view(): View {
     return this._view;
   }
 
@@ -38,7 +38,7 @@ export class Presenter {
       await operation();
     } catch (error) {
       this.view.displayErrorMessage(
-        `Failed to ${operationDescription} because of exception: ${error}`
+        `Failed to ${operationDescription} because of exception: ${(error as Error).message}`
       );
     }
   }
