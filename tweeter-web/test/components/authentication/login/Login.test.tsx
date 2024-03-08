@@ -64,7 +64,7 @@ describe("Login component", () => {
     await userEvent.click(signInButton);
 
     verify(mockPresenter.doLogin(alias, password, false, originalUrl)).once();
-  })
+  });
 });
 
 const renderLogin = (originalUrl: string, presenter?: LoginPresenter) => {
@@ -79,7 +79,10 @@ const renderLogin = (originalUrl: string, presenter?: LoginPresenter) => {
   );
 };
 
-const renderLoginAndGetElements = (originalUrl: string, presenter?: LoginPresenter) => {
+const renderLoginAndGetElements = (
+  originalUrl: string,
+  presenter?: LoginPresenter
+) => {
   const user = userEvent.setup();
 
   renderLogin(originalUrl, presenter);
@@ -89,5 +92,5 @@ const renderLoginAndGetElements = (originalUrl: string, presenter?: LoginPresent
   const passwordField = screen.getByLabelText("password");
   //const rememberMeCheckbox = screen.getByLabelText("rememberMeCheckbox");
 
-  return { signInButton, aliasField, passwordField, user};
+  return { signInButton, aliasField, passwordField, user };
 };

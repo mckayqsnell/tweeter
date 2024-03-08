@@ -63,13 +63,16 @@ describe("PostStatus component", () => {
     const mockPresenter = mock<PostStatusPresenter>();
     const mockPresenterInstance = instance(mockPresenter);
 
-    const { postStatusButton, postTextArea } =
-      renderPostStatusAndGetElements(mockPresenterInstance);
+    const { postStatusButton, postTextArea } = renderPostStatusAndGetElements(
+      mockPresenterInstance
+    );
 
     await userEvent.type(postTextArea, "test");
     await userEvent.click(postStatusButton);
 
-    verify(mockPresenter.postStatus("test", mockUserInstance, mockAuthTokenInstance)).once();
+    verify(
+      mockPresenter.postStatus("test", mockUserInstance, mockAuthTokenInstance)
+    ).once();
   });
 });
 
