@@ -1,6 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
-import { AuthView, Presenter, View } from "./Presenter";
+import { AuthView, Presenter} from "./Presenter";
 
 export class LoginPresenter extends Presenter {
   private service: UserService;
@@ -17,7 +17,7 @@ export class LoginPresenter extends Presenter {
   public async doLogin(
     alias: string,
     password: string,
-    rememberMeRef: React.MutableRefObject<boolean>,
+    rememberMe: boolean,
     originalUrl?: string
   ) {
     const authFunc = () => this.service.login(alias, password);
@@ -30,6 +30,6 @@ export class LoginPresenter extends Presenter {
     
     const navigationPath = originalUrl ? originalUrl : "/";
 
-    await this.doAuthOperation(authFunc, updateViewAfterAuth, navFunc, rememberMeRef.current, navigationPath);
+    await this.doAuthOperation(authFunc, updateViewAfterAuth, navFunc, rememberMe, navigationPath);
   }
 }

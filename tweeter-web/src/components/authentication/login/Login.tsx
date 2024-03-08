@@ -11,6 +11,7 @@ import { LoginPresenter } from "../../../presenter/LoginPresenter";
 
 interface Props {
   originalUrl?: string;
+  presenter?: LoginPresenter;
 }
 
 const Login = (props: Props) => {
@@ -36,7 +37,7 @@ const Login = (props: Props) => {
     navigate: navigate,
   }
 
-  const [presenter] = useState(new LoginPresenter(listener));
+  const [presenter] = useState(props.presenter ?? new LoginPresenter(listener));
 
   const inputFieldGenerator = () => {
     return (
@@ -67,7 +68,7 @@ const Login = (props: Props) => {
       switchAuthenticationMethodGenerator={switchAuthenticationMethodGenerator}
       setRememberMe={setRememberMe}
       submitButtonDisabled={checkSubmitButtonStatus}
-      submit={() => presenter.doLogin(alias, password, rememberMeRef, props.originalUrl)}
+      submit={() => presenter.doLogin(alias, password, rememberMeRef.current, props.originalUrl)}
     />
   );
 };
