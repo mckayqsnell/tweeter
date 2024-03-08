@@ -30,7 +30,7 @@ export class Presenter {
     return this._view;
   }
 
-  public async doFailureReportingOperation(
+  protected async doFailureReportingOperation(
     operation: () => Promise<void>,
     operationDescription: string
   ) {
