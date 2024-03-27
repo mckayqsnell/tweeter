@@ -1,0 +1,17 @@
+{
+  "name": "tweeter-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tweeter-shared": "file:../tweeter-shared",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.0"
+  }
+}
