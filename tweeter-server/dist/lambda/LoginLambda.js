@@ -1,4 +1,4 @@
-"use strict"; // TODO: MIGHT NEED TO REMOVE THIS
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -10,14 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginLambda = void 0;
-const tweeter_shared_1 = require("tweeter-shared");
 const UserService_1 = require("../model/service/UserService");
 class LoginLambda {
-    constructor() {
-        this.handler = (event) => __awaiter(this, void 0, void 0, function* () {
-            let response = new tweeter_shared_1.AuthenticateResponse(...(yield new UserService_1.UserService().login(event.username, event.password)));
+    static handler(event) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [user, token] = yield new UserService_1.UserService().login(event.alias, event.password);
+            let response = {
+                success: true,
+                message: "Login successful",
+                user: user ? user.dto : null,
+                token: token ? token.dto : null
+            };
             return response;
         });
     }
+    ;
 }
 exports.LoginLambda = LoginLambda;
+exports.loginHandler = LoginLambda.handler;

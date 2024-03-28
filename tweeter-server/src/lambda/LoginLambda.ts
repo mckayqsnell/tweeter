@@ -2,11 +2,18 @@ import { AuthenticateResponse, LoginRequest } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
 
 export class LoginLambda {
-  handler = async (event: LoginRequest): Promise<AuthenticateResponse> => {
-    ///... returns a list of parameters which contains the user and the token
-    let response = new AuthenticateResponse(
-      ...(await new UserService().login(event.username, event.password))
-    );
+  static async handler (event: LoginRequest): Promise<AuthenticateResponse> {
+    const [user, token] = await new UserService().login(event.alias, event.password);
+    
+    let response: AuthenticateResponse = {
+      success: true,
+      message: "Login successful",
+      user: user ? user.dto: null,
+      token: token ? token.dto: null
+    }
+    
     return response;
   };
 }
+
+exports.loginHandler = LoginLambda.handler;

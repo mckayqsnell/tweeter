@@ -1,0 +1,5 @@
+BUCKET='340testbucket868'
+EDIT_LAMBDALIST='
+login
+'
+LAMBDALAYER_ARN='arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:1'
