@@ -16,4 +16,4 @@ export class LoginLambda {
   };
 }
 
-exports.loginHandler = LoginLambda.handler;
+exports.handler = LoginLambda.handler;

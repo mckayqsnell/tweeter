@@ -22,3 +22,5 @@ export class RegisterLambda {
     return response;
   }
 }
+
+exports.handler = RegisterLambda.handler;

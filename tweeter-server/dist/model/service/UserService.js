@@ -14,12 +14,37 @@ const tweeter_shared_1 = require("tweeter-shared");
 class UserService {
     login(alias, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            // TODO: Replace with the result of calling the server
+            // TODO: Replace with result of calling to the database
             let user = tweeter_shared_1.FakeData.instance.firstUser;
             if (user === null) {
                 throw new Error("Invalid alias or password");
             }
             return [user, tweeter_shared_1.FakeData.instance.authToken];
+        });
+    }
+    register(firstName, lastName, alias, password, userImageBase64) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // TODO: Replace with result of calling to the database
+            let user = tweeter_shared_1.FakeData.instance.firstUser;
+            if (user === null) {
+                throw new Error("Invalid registration");
+            }
+            return [user, tweeter_shared_1.FakeData.instance.authToken];
+        });
+    }
+    getUser(authTokenDto, alias) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // TODO: Replace with the result of calling database
+            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
+            return tweeter_shared_1.FakeData.instance.findUserByAlias(alias);
+        });
+    }
+    logout(authTokenDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // TODO: Replace with the result of calling database
+            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
+            // Pause so we can see the logging out message. Delete when the call to the server is implemented.
+            yield new Promise((res) => setTimeout(res, 1000));
         });
     }
 }

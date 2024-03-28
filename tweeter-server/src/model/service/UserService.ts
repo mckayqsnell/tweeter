@@ -33,17 +33,17 @@ export class UserService {
   }
 
   public async getUser(
-    authToken: AuthTokenDto,
+    authTokenDto: AuthTokenDto,
     alias: string
   ): Promise<User | null> {
     // TODO: Replace with the result of calling database
-    // TODO: convert authTokenDto to AuthToken
+    const authToken = AuthToken.fromDto(authTokenDto);
     return FakeData.instance.findUserByAlias(alias);
   }
 
-  public async logout(authToken: AuthTokenDto): Promise<void> {
+  public async logout(authTokenDto: AuthTokenDto): Promise<void> {
     // TODO: Replace with the result of calling database
-    // TODO: convert authTokenDto to AuthToken
+    const authToken = AuthToken.fromDto(authTokenDto);
     // Pause so we can see the logging out message. Delete when the call to the server is implemented.
     await new Promise((res) => setTimeout(res, 1000));
   }

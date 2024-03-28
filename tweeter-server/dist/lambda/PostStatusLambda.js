@@ -9,22 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginLambda = void 0;
-const UserService_1 = require("../model/service/UserService");
-class LoginLambda {
+exports.PostStatusLambda = void 0;
+const StatusService_1 = require("../model/service/StatusService");
+class PostStatusLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [user, token] = yield new UserService_1.UserService().login(event.alias, event.password);
+            yield new StatusService_1.StatusService().postStatus(event.authToken, event.newStatus);
             let response = {
                 success: true,
-                message: "Login successful",
-                user: user ? user.dto : null,
-                token: token ? token.dto : null
+                message: "Post status successful"
             };
             return response;
         });
     }
-    ;
 }
-exports.LoginLambda = LoginLambda;
-exports.handler = LoginLambda.handler;
+exports.PostStatusLambda = PostStatusLambda;
+exports.handler = PostStatusLambda.handler;

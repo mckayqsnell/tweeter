@@ -1,36 +1,44 @@
-# Use this file to update the lambda layers for each lambda.
-# First create the new lambda layer, or lambda layer version, in aws by uploading the new lambda layer code.
-# Then copy the arn for the lambda layer from aws to the .server LAMBDALAYER_ARN variable.
-# Then run this script.
+#!/bin/bash
 
+# Load variables from .server file
 source .server
 
-# Removing old nodejs folder
-echo "Removing old nodejs folder..."
-rm -rf nodejs
+# Check if BUCKET variable is set
+if [ -z "$BUCKET" ]; then
+  echo "BUCKET is not set. Please define BUCKET in your .server file."
+  exit 1
+fi
 
-# Creating new nodejs folder
+echo "Preparing nodejs folder..."
+rm -rf nodejs nodejs.zip
+
 echo "Creating new nodejs folder..."
 mkdir nodejs
-
-# Copying the node_modules folder to the new nodejs folder
-echo "Copying the node_modules folder to the new nodejs folder..."
 cp -rL node_modules nodejs/
 
-# Contiin with the script to update lambda layers
-echo "Updating lambda layers for each lambda"
+echo "Zipping nodejs directory..."
+zip -r nodejs.zip nodejs
 
-i=1
-PID=0
-pids=()
+echo "Uploading zip to S3..."
+aws s3 cp nodejs.zip s3://$BUCKET/$S3_KEY
+
+echo "Publishing new layer version..."
+# Ensure to replace `LAYER_NAME` with the actual name of your Lambda layer
+LAYER_ARN=$(aws lambda publish-layer-version --layer-name tweeter_dependencies --description "New version $(date)" --content S3Bucket=$BUCKET,S3Key=$S3_KEY --compatible-runtimes nodejs20.x --query LayerVersionArn --output text)
+
+if [ -z "$LAYER_ARN" ]; then
+  echo "Failed to publish new layer version."
+  exit 1
+fi
+
+echo "New layer version ARN: $LAYER_ARN"
+
+echo "Updating lambda functions to use the new layer version..."
+
 for lambda in $EDIT_LAMBDALIST
 do
-    aws lambda update-function-configuration --function-name  $lambda --layer $LAMBDALAYER_ARN 1>>/dev/null & 
-    echo lambda $i, $lambda, updating lambda layer...
-    pids[${i-1}]=$!
-    ((i=i+1))
+    echo "Updating $lambda..."
+    aws lambda update-function-configuration --function-name $lambda --layers $LAYER_ARN
 done
-for pid in ${pids[*]}; do
-    wait $pid
-done
-echo Lambda layers updated for all lambdas in .source
+
+echo "Lambda functions updated."

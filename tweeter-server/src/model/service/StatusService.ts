@@ -1,40 +1,42 @@
-import { AuthToken, AuthTokenDto, FakeData, Status, StatusDto, User } from "tweeter-shared";
+import { AuthToken, AuthTokenDto, FakeData, Status, StatusDto, User, UserDto } from "tweeter-shared";
 
 export class StatusService {
   public async loadMoreStoryItems(
-    authToken: AuthTokenDto,
-    user: User,
+    authTokeDto: AuthTokenDto,
+    userDto: UserDto,
     pageSize: number,
     lastItem: StatusDto | null
   ): Promise<[Status[], boolean]> {
-    // TODO: Convert authTokenDto to AuthToken
-    // convert StatusDto to Status
+
+    const authToken = AuthToken.fromDto(authTokeDto);
+    const user = User.fromDto(userDto);
     const lastStatusItem = Status.fromDto(lastItem);
-    // TODO: Replace with the result of calling server
+    // TODO: Replace with the result of calling database
     return FakeData.instance.getPageOfStatuses(lastStatusItem, pageSize);
   }
 
   public async loadMoreFeedItems(
-    authToken: AuthTokenDto,
-    user: User,
+    authTokenDto: AuthTokenDto,
+    userDto: UserDto,
     pageSize: number,
     lastItem: StatusDto | null
   ): Promise<[Status[], boolean]> {
-    // TODO: Convert authTokenDto to AuthToken
-    // convert StatusDto to Status
+
+    const authToken = AuthToken.fromDto(authTokenDto);
+    const user = User.fromDto(userDto);
     const lastStatusItem = Status.fromDto(lastItem);
+    // TODO: Replace with the result of calling database
     return FakeData.instance.getPageOfStatuses(lastStatusItem, pageSize);
   }
 
   public async postStatus(
-    authToken: AuthTokenDto,
-    newStatus: StatusDto
+    authTokenDto: AuthTokenDto,
+    newStatusDto: StatusDto
   ): Promise<void> {
-    // TODO: Convert authTokenDto to AuthToken
-    // TODO: convert StatusDto to Status
+    const authToken = AuthToken.fromDto(authTokenDto);
+    const newStatus = Status.fromDto(newStatusDto);
     // Pause so we can see the logging out message. Remove when connected to the server
+    // TODO: Replace with the result of calling database
     await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server to post the status
   }
 }

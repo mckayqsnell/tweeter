@@ -9,22 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginLambda = void 0;
+exports.RegisterLambda = void 0;
 const UserService_1 = require("../model/service/UserService");
-class LoginLambda {
+class RegisterLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [user, token] = yield new UserService_1.UserService().login(event.alias, event.password);
+            const [user, token] = yield new UserService_1.UserService().register(event.firstName, event.lastName, event.alias, event.password, event.imageStringBase64);
             let response = {
                 success: true,
                 message: "Login successful",
                 user: user ? user.dto : null,
-                token: token ? token.dto : null
+                token: token ? token.dto : null,
             };
             return response;
         });
     }
-    ;
 }
-exports.LoginLambda = LoginLambda;
-exports.handler = LoginLambda.handler;
+exports.RegisterLambda = RegisterLambda;
+exports.handler = RegisterLambda.handler;

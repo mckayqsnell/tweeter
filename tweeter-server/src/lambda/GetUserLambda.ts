@@ -16,3 +16,5 @@ export class GetUserLambda {
     return response;
   }
 }
+
+exports.handler = GetUserLambda.handler;

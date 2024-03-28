@@ -2,60 +2,64 @@ import { AuthToken, AuthTokenDto, FakeData, User, UserDto } from "tweeter-shared
 
 export class FollowService {
   public async loadMoreFollowers(
-    authToken: AuthTokenDto,
-    user: User,
+    authTokenDto: AuthTokenDto,
+    userDto: UserDto,
     pageSize: number,
     lastItem: UserDto | null
   ): Promise<[User[], boolean]> {
-    // Convert AuthTokenDto to AuthToken
-    // convert UserDto to User
-    let lastUserItem = User.fromDto(lastItem);
+
+    const authToken = AuthToken.fromDto(authTokenDto);
+    const user = User.fromDto(userDto);
+    const lastUserItem = User.fromDto(lastItem);
     // TODO: Replace with the result of calling the database
     return FakeData.instance.getPageOfUsers(lastUserItem, pageSize, user);
   }
 
   public async loadMoreFollowees(
-    authToken: AuthToken,
-    user: User,
+    authTokenDto: AuthTokenDto,
+    userDto: UserDto,
     pageSize: number,
     lastItem: UserDto | null
   ): Promise<[User[], boolean]> {
-    // TODO: Convert AuthTokenDto to AuthToken
-    // convert UserDto to User
-    let lastUserItem = User.fromDto(lastItem);
+    
+    const authToken = AuthToken.fromDto(authTokenDto);
+    const user = User.fromDto(userDto);
+    const lastUserItem = User.fromDto(lastItem);
     // TODO: Replace with the result of calling database
     return FakeData.instance.getPageOfUsers(lastUserItem, pageSize, user);
   }
 
   public async getIsFollowerStatus(
-    authToken: AuthTokenDto,
-    user: UserDto,
-    selectedUser: UserDto
+    authTokenDto: AuthTokenDto,
+    userDto: UserDto,
+    selectedUserDto: UserDto
   ): Promise<boolean> {
-    // TODO: Convert AuthTokenDto to AuthToken
-    // TODO: convert UserDto to User for both user and selectedUser
+
+    const authToken = AuthToken.fromDto(authTokenDto);
+    const user = User.fromDto(userDto);
+    const selectedUser = User.fromDto(selectedUserDto);
     // TODO: Replace with the result of calling database
     return FakeData.instance.isFollower();
   }
 
   public async getFolloweesCount(
-    authToken: AuthToken,
+    authTokenDto: AuthTokenDto,
     userDto: UserDto
   ): Promise<number> {
-    // TODO: Convert AuthTokenDto to AuthToken
-    // convert UserDto to User
+    const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
     // TODO: Replace with the result of calling the database
     return FakeData.instance.getFolloweesCount(user!);
   }
 
   public async getFollowersCount(
-    authToken: AuthTokenDto,
+    authTokenDto: AuthTokenDto,
     userDto: UserDto
   ): Promise<number> {
-    // TODO: Convert AuthTokenDto to AuthToken
-    // convert UserDto to User
+
+    const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
+    // TODO: Replace with the result of calling the database
     return FakeData.instance.getFollowersCount(user!);
   }
 
@@ -67,9 +71,7 @@ export class FollowService {
     await new Promise((f) => setTimeout(f, 2000));
 
     // TODO: Call the the database
-    // Convert AuthTokenDto to AuthToken
     const authToken = AuthToken.fromDto(authTokenDto);
-    // convert UserDto to User
     const userToFollow = User.fromDto(userToFollowDto);
 
     let followersCount = await this.getFollowersCount(authToken!, userToFollow!);
@@ -86,9 +88,7 @@ export class FollowService {
     await new Promise((f) => setTimeout(f, 2000));
 
     // TODO: Call the server
-    // Convert AuthTokenDto to AuthToken
     const authToken = AuthToken.fromDto(authTokenDto);
-    // convert UserDto to User
     const userToUnfollow = User.fromDto(userToUnfollowDto);
 
     let followersCount = await this.getFollowersCount(
