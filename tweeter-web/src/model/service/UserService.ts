@@ -1,4 +1,4 @@
-import { AuthToken, FakeData, LoginRequest, User } from "tweeter-shared";
+import { AuthToken, GetUserRequest, LoginRequest, LogoutRequest, RegisterRequest, User } from "tweeter-shared";
 import { Buffer } from "buffer";
 import { ServerFacade } from "./ServerFacade/ServerFacade"
 
@@ -13,18 +13,30 @@ export class UserService {
     password: string,
     userImageBytes: Uint8Array
   ): Promise<[User, AuthToken]> {
-    // Not neded now, but will be needed when you make the request to the server in milestone 3
-    let imageStringBase64: string =
+
+    const imageStringBase64: string =
       Buffer.from(userImageBytes).toString("base64");
 
-    // TODO: Replace with the result of calling the server
-    let user = FakeData.instance.firstUser;
+    //Build up the RegisterRequest object
+    const request: RegisterRequest = {
+      firstName: firstName,
+      lastName: lastName,
+      alias: alias,
+      password: password,
+      imageStringBase64: imageStringBase64
+    }
+    //Call the server
+    const response = await this.serverFacade.register(request);
 
-    if (user === null) {
-      throw new Error("Invalid registration");
+    if(!response.success){
+      throw new Error(response.message || "Invalid registration");
     }
 
-    return [user, FakeData.instance.authToken];
+    if(response.user === null || response.token === null){
+      throw new Error(response.message || "Invalid registration");
+    }
+
+    return [User.fromDto(response.user)!, AuthToken.fromDto(response.token)!];
   }
 
   public async login(
@@ -56,11 +68,40 @@ export class UserService {
     alias: string
   ): Promise<User | null> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.findUserByAlias(alias);
+    // return FakeData.instance.findUserByAlias(alias);
+
+    //Build up the GetUserRequest object
+    const request: GetUserRequest = {
+      authToken: authToken,
+      alias: alias
+    }
+    //Call the server
+    const response = await this.serverFacade.getUser(request);
+
+    if(!response.success){
+      throw new Error(response.message || "Invalid alias");
+    }
+
+    if(response.user === null){
+      throw new Error(response.message || "Invalid alias");
+    }
+
+    return User.fromDto(response.user)!;
   }
 
   public async logout (authToken: AuthToken): Promise<void> {
-    // Pause so we can see the logging out message. Delete when the call to the server is implemented.
-    await new Promise((res) => setTimeout(res, 1000));
+    // // Pause so we can see the logging out message. Delete when the call to the server is implemented.
+    // await new Promise((res) => setTimeout(res, 1000));
+
+    //Build up the LogoutRequest object
+    const request = new LogoutRequest(authToken);
+    //Call the server
+    const response = await this.serverFacade.logout(request);
+
+    if(!response.success){
+      throw new Error(response.message || "Invalid logout");
+    }
+
+    return;
   };
 }
