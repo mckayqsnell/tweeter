@@ -1,6 +1,8 @@
 import { AuthToken } from "../domain/AuthToken";
+import { Status } from "../domain/Status";
 import { User } from "../domain/User";
 import { AuthTokenDto } from "../dto/AuthTokenDto";
+import { StatusDto } from "../dto/StatusDto";
 import { UserDto } from "../dto/UserDto";
 
 export interface TweeterRequest {}
@@ -52,20 +54,35 @@ export class LogoutRequest implements TweeterRequest {
 }
 
 
-/// Parent class for general loading of more items  ///
-// LoadMoreStoryItems, LoadMoreFeedItems, LoadMoreFollowersItems, LoadMoreFollowingItems
-export class LoadMoreItemsRequest implements TweeterRequest {
-    authToken: AuthTokenDto; // might not need this?
+/// Parent classes for general loading of more items  ///
+// LoadMoreFollowersItems, LoadMoreFollowingItems
+export class LoadMoreFollowItemsRequest implements TweeterRequest {
+    authToken: AuthTokenDto;
     user: UserDto;
     pageSize: number;
-    lastItem: User | null;
+    lastItem: UserDto | null;
 
     constructor(authtoken: AuthToken, user: User, pageSize: number, lastItem: User | null) {
         this.authToken = authtoken.dto;
         this.user = user.dto;
         this.pageSize = pageSize;
-        this.lastItem = lastItem;
+        this.lastItem = lastItem ? lastItem.dto: null;
     }
+}
+
+export class LoadMoreStatusItemsRequest implements TweeterRequest {
+    authToken: AuthTokenDto;
+    user: UserDto;
+    pageSize: number;
+    lastItem: StatusDto | null;
+
+    constructor(authtoken: AuthToken, user: User, pageSize: number, lastItem: Status | null) {
+        this.authToken = authtoken.dto;
+        this.user = user.dto;
+        this.pageSize = pageSize;
+        this.lastItem = lastItem ? lastItem.dto : null;
+    }
+
 }
 
 /// Follow related Requests ///
@@ -84,7 +101,7 @@ export class GetIsFollowerStatusRequest implements TweeterRequest {
 }
 
 // GetFollowersCount and GetFolloweesCount
-export class GetFollowCount implements TweeterRequest {
+export class GetFollowCountRequest implements TweeterRequest {
   authToken: AuthTokenDto;
   user: UserDto;
 
@@ -110,10 +127,10 @@ export class FollowOrUnFollowRequest implements TweeterRequest {
 // postStatus
 export class PostStatusRequest implements TweeterRequest {
     authToken: AuthTokenDto;
-    newStatus: string;
+    newStatus: StatusDto;
 
-    constructor(authtoken: AuthToken, newStatus: string) {
+    constructor(authtoken: AuthToken, newStatus: Status) {
         this.authToken = authtoken.dto;
-        this.newStatus = newStatus;
+        this.newStatus = newStatus.dto;
     }
 }

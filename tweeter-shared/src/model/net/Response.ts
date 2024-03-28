@@ -53,8 +53,8 @@ export interface FollowOrUnFollowResponse extends TweeterResponse {
 ////////////////////////////////
 
 // LoadMoreStatusItems: loadMoreStoryItems and loadMoreFeedItems
-export interface loadMoreStatusItemsResponse extends TweeterResponse {
-  status: StatusDto[];
+export interface LoadMoreStatusItemsResponse extends TweeterResponse {
+  statusItems: StatusDto[];
   hasMorePages: boolean;
 }
 
