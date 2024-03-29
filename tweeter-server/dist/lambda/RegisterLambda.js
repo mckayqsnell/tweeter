@@ -14,14 +14,20 @@ const UserService_1 = require("../model/service/UserService");
 class RegisterLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [user, token] = yield new UserService_1.UserService().register(event.firstName, event.lastName, event.alias, event.password, event.imageStringBase64);
-            let response = {
-                success: true,
-                message: "Login successful",
-                user: user ? user.dto : null,
-                token: token ? token.dto : null,
-            };
-            return response;
+            try {
+                const [user, token] = yield new UserService_1.UserService().register(event.firstName, event.lastName, event.alias, event.password, event.imageStringBase64);
+                let response = {
+                    success: true,
+                    message: "Login successful",
+                    user: user ? user.dto : null,
+                    token: token ? token.dto : null,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when registering a user");
+                throw error;
+            }
         });
     }
 }

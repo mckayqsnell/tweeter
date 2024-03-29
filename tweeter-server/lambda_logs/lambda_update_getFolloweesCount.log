@@ -1,24 +1,24 @@
 {
     "FunctionName": "getFolloweesCount",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getFolloweesCount:6",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getFolloweesCount:7",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/GetFolloweesCountLambda.handler",
-    "CodeSize": 15134,
+    "CodeSize": 16070,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T05:53:01.000+0000",
-    "CodeSha256": "BsENAPAgDi2ye/sBTHtWOPXNOZBgmxC/aBaPSRccAwE=",
-    "Version": "6",
+    "LastModified": "2024-03-29T23:13:14.000+0000",
+    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
+    "Version": "7",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "7363d2f8-df56-4e0c-83d4-f7a4293d7378",
+    "RevisionId": "276388aa-9645-493e-a5ea-b105af39a206",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:22",
-            "CodeSize": 1299755
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",
+            "CodeSize": 1299756
         }
     ],
     "State": "Pending",

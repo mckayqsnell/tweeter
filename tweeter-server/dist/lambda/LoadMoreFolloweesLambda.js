@@ -15,27 +15,30 @@ const FollowService_1 = require("../model/service/FollowService");
 class LoadMoreFolloweesLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("LoadMoreFolloweesLambda.handler: event = ", event);
-            // deserialize the event into a LoadMoreFollowItemsRequest
-            event = tweeter_shared_1.LoadMoreFollowItemsRequest.fromJSON(event);
-            console.log("LoadMoreFolloweesRequest deserialized");
-            console.log("LoadMoreFolloweesLambda.handler: event = ", event);
-            if (!event.authToken || !event.user) {
-                return {
-                    success: false,
-                    message: "Request is missing required fields",
-                    users: [],
-                    hasMorePages: false
+            try {
+                // deserialize the event into a LoadMoreFollowItemsRequest
+                event = tweeter_shared_1.LoadMoreFollowItemsRequest.fromJSON(event);
+                if (!event.authToken || !event.user) {
+                    return {
+                        success: false,
+                        message: "Request is missing required fields",
+                        users: [],
+                        hasMorePages: false,
+                    };
+                }
+                const [followees, hasMorePages] = yield new FollowService_1.FollowService().loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
+                let response = {
+                    success: true,
+                    message: "Load more followees successful",
+                    users: followees.map((user) => user.dto),
+                    hasMorePages: hasMorePages,
                 };
+                return response;
             }
-            const [followees, hasMorePages] = yield new FollowService_1.FollowService().loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
-            let response = {
-                success: true,
-                message: "Load more followees successful",
-                users: followees.map((user) => user.dto),
-                hasMorePages: hasMorePages,
-            };
-            return response;
+            catch (error) {
+                console.error(error ? error : "An error occurred when loading more followees");
+                throw error;
+            }
         });
     }
 }

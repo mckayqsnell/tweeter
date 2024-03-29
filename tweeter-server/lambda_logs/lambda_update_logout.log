@@ -1,24 +1,24 @@
 {
     "FunctionName": "logout",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:logout:6",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:logout:7",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/LogoutLambda.handler",
-    "CodeSize": 15134,
+    "CodeSize": 16070,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T05:53:00.000+0000",
-    "CodeSha256": "BsENAPAgDi2ye/sBTHtWOPXNOZBgmxC/aBaPSRccAwE=",
-    "Version": "6",
+    "LastModified": "2024-03-29T23:13:14.000+0000",
+    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
+    "Version": "7",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "b34bc7dd-2206-4d45-a561-96cd5a6a39fe",
+    "RevisionId": "782e1d5f-bfd5-4a6f-a9a2-64a657294535",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:22",
-            "CodeSize": 1299755
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",
+            "CodeSize": 1299756
         }
     ],
     "State": "Pending",

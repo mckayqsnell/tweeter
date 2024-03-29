@@ -3,19 +3,31 @@ import { LoadMoreFollowItemsResponse } from "tweeter-shared/dist/model/net/Respo
 import { FollowService } from "../model/service/FollowService";
 
 export class LoadMoreFollowersLambda {
-    static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
-        event = LoadMoreFollowItemsRequest.fromJSON(event);
-        
-        const [followers, hasMore] = await new FollowService().loadMoreFollowers(event.authToken, event.user, event.pageSize, event.lastItem);
-        
-        let response = {
-            success: true,
-            message: "Successfully loaded more followers.",
-            users: followers.map((user) => user.dto),
-            hasMorePages: hasMore
-        };
-        return response;
+  static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
+    try {
+      event = LoadMoreFollowItemsRequest.fromJSON(event);
+
+      const [followers, hasMore] = await new FollowService().loadMoreFollowers(
+        event.authToken,
+        event.user,
+        event.pageSize,
+        event.lastItem
+      );
+
+      let response = {
+        success: true,
+        message: "Successfully loaded more followers.",
+        users: followers.map((user) => user.dto),
+        hasMorePages: hasMore,
+      };
+      return response;
+    } catch (error) {
+      console.error(
+        error ? error : "An error occurred when loading more followers."
+      );
+      throw error;
     }
+  }
 }
 
 exports.handler = LoadMoreFollowersLambda.handler;

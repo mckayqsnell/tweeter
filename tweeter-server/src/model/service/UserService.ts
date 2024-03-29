@@ -8,9 +8,10 @@ export class UserService {
     // TODO: Replace with result of calling to the database
     let user = FakeData.instance.firstUser;
 
-    if (user === null) {
-      throw new Error("Invalid alias or password");
+    if (!user) {
+      throw new Error(`[Bad Request] user login failed for ${alias}`);
     }
+    // TODO: have this return a messgae from the DAO as well(incorrect password, user not found, etc.)
 
     return [user, FakeData.instance.authToken];
   }
@@ -25,9 +26,10 @@ export class UserService {
     // TODO: Replace with result of calling to the database
     let user = FakeData.instance.firstUser;
 
-    if (user === null) {
-      throw new Error("Invalid registration");
+    if (!user) {
+      throw new Error(`[Bad Request] user registration failed for ${alias}`);
     }
+    // TODO: have this return the message from the DAO (duplicate user, etc.)
 
     return [user, FakeData.instance.authToken];
   }
@@ -38,13 +40,27 @@ export class UserService {
   ): Promise<User | null> {
     // TODO: Replace with the result of calling database
     const authToken = AuthToken.fromDto(authTokenDto);
-    return FakeData.instance.findUserByAlias(alias);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    const user = FakeData.instance.findUserByAlias(alias);
+
+    if (!user) {
+      throw new Error(`[Bad Request] requested user ${alias} does not exist`);
+    }
+
+    return user;
   }
 
   public async logout(authTokenDto: AuthTokenDto): Promise<void> {
     // TODO: Replace with the result of calling database
     const authToken = AuthToken.fromDto(authTokenDto);
-    // Pause so we can see the logging out message. Delete when the call to the server is implemented.
-    await new Promise((res) => setTimeout(res, 1000));
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
   }
+
+  // TODO: Implement actual logout logic, such as invalidating the authToken in the database
 }

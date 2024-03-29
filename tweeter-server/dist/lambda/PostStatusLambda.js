@@ -15,13 +15,19 @@ const StatusService_1 = require("../model/service/StatusService");
 class PostStatusLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            event = Request_1.PostStatusRequest.fromJSON(event);
-            yield new StatusService_1.StatusService().postStatus(event.authToken, event.newStatus);
-            let response = {
-                success: true,
-                message: "Post status successful"
-            };
-            return response;
+            try {
+                event = Request_1.PostStatusRequest.fromJSON(event);
+                yield new StatusService_1.StatusService().postStatus(event.authToken, event.newStatus);
+                let response = {
+                    success: true,
+                    message: "Post status successful",
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when posting a status");
+                throw error;
+            }
         });
     }
 }

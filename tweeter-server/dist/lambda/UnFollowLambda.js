@@ -14,14 +14,20 @@ const FollowService_1 = require("../model/service/FollowService");
 class UnFollowLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [followersCount, followeesCount] = yield new FollowService_1.FollowService().unfollow(event.authToken, event.userToFollowOrUnFollow);
-            let response = {
-                success: true,
-                message: "Unfollow successful",
-                followersCount: followersCount,
-                followeesCount: followeesCount
-            };
-            return response;
+            try {
+                const [followersCount, followeesCount] = yield new FollowService_1.FollowService().unfollow(event.authToken, event.userToFollowOrUnFollow);
+                let response = {
+                    success: true,
+                    message: "Unfollow successful",
+                    followersCount: followersCount,
+                    followeesCount: followeesCount,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when unfollowing a user");
+                throw error;
+            }
         });
     }
 }

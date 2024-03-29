@@ -1,4 +1,10 @@
-import { AuthToken, AuthTokenDto, FakeData, User, UserDto } from "tweeter-shared";
+import {
+  AuthToken,
+  AuthTokenDto,
+  FakeData,
+  User,
+  UserDto,
+} from "tweeter-shared";
 
 export class FollowService {
   public async loadMoreFollowers(
@@ -7,10 +13,18 @@ export class FollowService {
     pageSize: number,
     lastItem: UserDto | null
   ): Promise<[User[], boolean]> {
-
     const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
     const lastUserItem = User.fromDto(lastItem);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!user) {
+      throw new Error("[Bad Request] user for loadingFollowers does not exist");
+    }
+
     // TODO: Replace with the result of calling the database
     return FakeData.instance.getPageOfUsers(lastUserItem, pageSize, user);
   }
@@ -21,10 +35,18 @@ export class FollowService {
     pageSize: number,
     lastItem: UserDto | null
   ): Promise<[User[], boolean]> {
-    
     const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
     const lastUserItem = User.fromDto(lastItem);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!user) {
+      throw new Error("[Bad Request] user for loadingFollowees does not exist");
+    }
+
     // TODO: Replace with the result of calling database
     return FakeData.instance.getPageOfUsers(lastUserItem, pageSize, user);
   }
@@ -34,10 +56,25 @@ export class FollowService {
     userDto: UserDto,
     selectedUserDto: UserDto
   ): Promise<boolean> {
-
     const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
     const selectedUser = User.fromDto(selectedUserDto);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!user) {
+      throw new Error(
+        "[Bad Request] user for getIsFollowerStatus does not exist"
+      );
+    }
+
+    if (!selectedUser) {
+      throw new Error(
+        "[Bad Request] selectedUser for getIsFollowerStatus does not exist"
+      );
+    }
     // TODO: Replace with the result of calling database
     return FakeData.instance.isFollower();
   }
@@ -48,6 +85,16 @@ export class FollowService {
   ): Promise<number> {
     const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!user) {
+      throw new Error(
+        "[Bad Request] user for getFolloweesCount does not exist"
+      );
+    }
     // TODO: Replace with the result of calling the database
     return FakeData.instance.getFolloweesCount(user!);
   }
@@ -56,9 +103,18 @@ export class FollowService {
     authTokenDto: AuthTokenDto,
     userDto: UserDto
   ): Promise<number> {
-
     const authToken = AuthToken.fromDto(authTokenDto);
     const user = User.fromDto(userDto);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!user) {
+      throw new Error(
+        "[Bad Request] user for getFollowersCount does not exist"
+      );
+    }
     // TODO: Replace with the result of calling the database
     return FakeData.instance.getFollowersCount(user!);
   }
@@ -67,15 +123,26 @@ export class FollowService {
     authTokenDto: AuthTokenDto,
     userToFollowDto: UserDto
   ): Promise<[followersCount: number, followeesCount: number]> {
-    // Pause so we can see the following message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
     // TODO: Call the the database
     const authToken = AuthToken.fromDto(authTokenDto);
     const userToFollow = User.fromDto(userToFollowDto);
 
-    let followersCount = await this.getFollowersCount(authToken!, userToFollow!);
-    let followeesCount = await this.getFolloweesCount(authToken!, userToFollow!);
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!userToFollow) {
+      throw new Error("[Bad Request] userToFollow for follow does not exist");
+    }
+
+    let followersCount = await this.getFollowersCount(
+      authToken!,
+      userToFollow!
+    );
+    let followeesCount = await this.getFolloweesCount(
+      authToken!,
+      userToFollow!
+    );
 
     return [followersCount, followeesCount];
   }
@@ -84,12 +151,19 @@ export class FollowService {
     authTokenDto: AuthTokenDto,
     userToUnfollowDto: UserDto
   ): Promise<[followersCount: number, followeesCount: number]> {
-    // Pause so we can see the unfollowing message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
     // TODO: Call the server
     const authToken = AuthToken.fromDto(authTokenDto);
     const userToUnfollow = User.fromDto(userToUnfollowDto);
+
+    if (!authToken) {
+      throw new Error("[AuthError] unauthenticated request");
+    }
+
+    if (!userToUnfollow) {
+      throw new Error(
+        "[Bad Request] userToUnfollow for unfollow does not exist"
+      );
+    }
 
     let followersCount = await this.getFollowersCount(
       authToken!,

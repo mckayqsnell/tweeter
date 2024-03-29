@@ -14,12 +14,18 @@ const UserService_1 = require("../model/service/UserService");
 class LogoutLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield new UserService_1.UserService().logout(event.authToken);
-            let response = {
-                success: true,
-                message: "Logout successful"
-            };
-            return response;
+            try {
+                yield new UserService_1.UserService().logout(event.authToken);
+                let response = {
+                    success: true,
+                    message: "Logout successful",
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when logging out a user");
+                throw error;
+            }
         });
     }
 }

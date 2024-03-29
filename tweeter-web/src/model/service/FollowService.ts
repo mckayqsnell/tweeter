@@ -23,13 +23,15 @@ export class FollowService {
     const response = await this.serverFacade.loadMoreFollowers(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(
+        response.message || "unsuccessful request for loadMoreFollowers"
+      );
     }
 
     return [response.users.map((user) => User.fromDto(user)!), response.hasMorePages];
   }
 
-  public async loadMoreFollowees( // TODO
+  public async loadMoreFollowees(
     authToken: AuthToken,
     user: User,
     pageSize: number,
@@ -47,7 +49,7 @@ export class FollowService {
     const response = await this.serverFacade.loadMoreFollowees(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(response.message || "unsuccessful request for loadMoreFollowees");
     }
 
     return [
@@ -72,7 +74,7 @@ export class FollowService {
     const response = await this.serverFacade.getIsFollowerStatus(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(response.message || "unsuccessful request for follower status");
     }
 
     return response.isFollower;
@@ -94,7 +96,7 @@ export class FollowService {
     const response = await this.serverFacade.getFolloweesCount(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(response.message || "Unsuccessful request for followees count");
     }
 
     return response.count;
@@ -117,7 +119,7 @@ export class FollowService {
     const response = await this.serverFacade.getFollowersCount(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(response.message || "unsuccessful request for followers count");
     }
 
     return response.count;
@@ -147,7 +149,7 @@ export class FollowService {
     const response = await this.serverFacade.follow(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(response.message || "unsuccessful request for follow");
     }
 
     return [response.followersCount, response.followeesCount];
@@ -157,17 +159,6 @@ export class FollowService {
     authToken: AuthToken,
     userToUnfollow: User
   ): Promise<[followersCount: number, followeesCount: number]> {
-    // // Pause so we can see the unfollowing message. Remove when connected to the server
-    // await new Promise((f) => setTimeout(f, 2000));
-
-    // // TODO: Call the server
-
-    // let followersCount = await this.getFollowersCount(authToken, userToUnfollow);
-    // let followeesCount = await this.getFolloweesCount(authToken, userToUnfollow);
-
-    // return [followersCount, followeesCount];
-
-    // Build up a follow/unfollow request object
     const request: FollowOrUnFollowRequest = {
       authToken: authToken,
       userToFollowOrUnFollow: userToUnfollow
@@ -177,7 +168,7 @@ export class FollowService {
     const response = await this.serverFacade.unFollow(request);
 
     if (!response.success) {
-      throw new Error(response.message || "Invalid request");
+      throw new Error(response.message || "unsuccessful request for unfollow");
     }
 
     return [response.followersCount, response.followeesCount];

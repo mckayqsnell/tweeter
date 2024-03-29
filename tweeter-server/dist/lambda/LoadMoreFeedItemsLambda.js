@@ -15,15 +15,21 @@ const StatusService_1 = require("../model/service/StatusService");
 class LoadMoreFeedItemsLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
-            const [feedItems, hasMorePages] = yield new StatusService_1.StatusService().loadMoreFeedItems(event.authToken, event.user, event.pageSize, event.lastItem);
-            let response = {
-                success: true,
-                message: "Load more feed items successful",
-                statusItems: feedItems.map(feedItem => feedItem.dto),
-                hasMorePages: hasMorePages
-            };
-            return response;
+            try {
+                event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
+                const [feedItems, hasMorePages] = yield new StatusService_1.StatusService().loadMoreFeedItems(event.authToken, event.user, event.pageSize, event.lastItem);
+                let response = {
+                    success: true,
+                    message: "Load more feed items successful",
+                    statusItems: feedItems.map((feedItem) => feedItem.dto),
+                    hasMorePages: hasMorePages,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when loading more feed items");
+                throw error;
+            }
         });
     }
 }

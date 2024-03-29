@@ -15,15 +15,21 @@ const FollowService_1 = require("../model/service/FollowService");
 class LoadMoreFollowersLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            event = Request_1.LoadMoreFollowItemsRequest.fromJSON(event);
-            const [followers, hasMore] = yield new FollowService_1.FollowService().loadMoreFollowers(event.authToken, event.user, event.pageSize, event.lastItem);
-            let response = {
-                success: true,
-                message: "Successfully loaded more followers.",
-                users: followers.map((user) => user.dto),
-                hasMorePages: hasMore
-            };
-            return response;
+            try {
+                event = Request_1.LoadMoreFollowItemsRequest.fromJSON(event);
+                const [followers, hasMore] = yield new FollowService_1.FollowService().loadMoreFollowers(event.authToken, event.user, event.pageSize, event.lastItem);
+                let response = {
+                    success: true,
+                    message: "Successfully loaded more followers.",
+                    users: followers.map((user) => user.dto),
+                    hasMorePages: hasMore,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when loading more followers.");
+                throw error;
+            }
         });
     }
 }

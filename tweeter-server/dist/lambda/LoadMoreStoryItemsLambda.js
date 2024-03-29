@@ -15,27 +15,30 @@ const StatusService_1 = require("../model/service/StatusService");
 class LoadMoreStoryItemsLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("LoadMoreStoryItemsLambda.handler: event = ", event);
-            // deserialize the event into a LoadMoreStatusItemsRequest
-            event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
-            console.log("LoadMoreStoryItemsRequest deserialized");
-            console.log("LoadMoreStoryItemsLambda.handler: event = ", event);
-            if (!event.authToken || !event.user) {
-                return {
-                    success: false,
-                    message: "Request is missing required fields",
-                    statusItems: [],
-                    hasMorePages: false
+            try {
+                // deserialize the event into a LoadMoreStatusItemsRequest
+                event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
+                if (!event.authToken || !event.user) {
+                    return {
+                        success: false,
+                        message: "Request is missing required fields",
+                        statusItems: [],
+                        hasMorePages: false,
+                    };
+                }
+                const [storyItems, hasMorePages] = yield new StatusService_1.StatusService().loadMoreStoryItems(event.authToken, event.user, event.pageSize, event.lastItem);
+                let response = {
+                    success: true,
+                    message: "Load more story items successful",
+                    statusItems: storyItems.map((storyItem) => storyItem.dto),
+                    hasMorePages: hasMorePages,
                 };
+                return response;
             }
-            const [storyItems, hasMorePages] = yield new StatusService_1.StatusService().loadMoreStoryItems(event.authToken, event.user, event.pageSize, event.lastItem);
-            let response = {
-                success: true,
-                message: "Load more story items successful",
-                statusItems: storyItems.map(storyItem => storyItem.dto),
-                hasMorePages: hasMorePages
-            };
-            return response;
+            catch (error) {
+                console.error(error ? error : "An error occurred when loading more story items");
+                throw error;
+            }
         });
     }
 }

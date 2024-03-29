@@ -14,13 +14,19 @@ const FollowService_1 = require("../model/service/FollowService");
 class GetIsFollowerLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const isFollower = yield new FollowService_1.FollowService().getIsFollowerStatus(event.authToken, event.user, event.selectedUser);
-            let response = {
-                success: true,
-                message: "Get is follower successful",
-                isFollower: isFollower
-            };
-            return response;
+            try {
+                const isFollower = yield new FollowService_1.FollowService().getIsFollowerStatus(event.authToken, event.user, event.selectedUser);
+                let response = {
+                    success: true,
+                    message: "Get is follower successful",
+                    isFollower: isFollower,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when getting is follower status");
+                throw error;
+            }
         });
     }
 }

@@ -1,24 +1,24 @@
 {
     "FunctionName": "follow",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:follow:6",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:follow:7",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/FollowLambda.handler",
-    "CodeSize": 15134,
+    "CodeSize": 16070,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T05:53:01.000+0000",
-    "CodeSha256": "BsENAPAgDi2ye/sBTHtWOPXNOZBgmxC/aBaPSRccAwE=",
-    "Version": "6",
+    "LastModified": "2024-03-29T23:13:15.000+0000",
+    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
+    "Version": "7",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "0a7aba3c-8578-4211-8cfb-a8ec4c8cbc57",
+    "RevisionId": "623392d8-091b-4a93-9d38-661998e86f0b",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:22",
-            "CodeSize": 1299755
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",
+            "CodeSize": 1299756
         }
     ],
     "State": "Pending",

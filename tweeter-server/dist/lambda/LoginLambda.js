@@ -14,17 +14,22 @@ const UserService_1 = require("../model/service/UserService");
 class LoginLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [user, token] = yield new UserService_1.UserService().login(event.alias, event.password);
-            let response = {
-                success: true,
-                message: "Login successful",
-                user: user ? user.dto : null,
-                token: token ? token.dto : null
-            };
-            return response;
+            try {
+                const [user, token] = yield new UserService_1.UserService().login(event.alias, event.password);
+                let response = {
+                    success: true,
+                    message: "Login successful",
+                    user: user ? user.dto : null,
+                    token: token ? token.dto : null,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when logging in a user");
+                throw error;
+            }
         });
     }
-    ;
 }
 exports.LoginLambda = LoginLambda;
 exports.handler = LoginLambda.handler;

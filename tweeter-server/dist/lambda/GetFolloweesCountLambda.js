@@ -14,13 +14,19 @@ const FollowService_1 = require("../model/service/FollowService");
 class GetFolloweesCountLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const count = yield new FollowService_1.FollowService().getFolloweesCount(event.authToken, event.user);
-            let response = {
-                success: true,
-                message: "Get followees count successful",
-                count: count
-            };
-            return response;
+            try {
+                const count = yield new FollowService_1.FollowService().getFolloweesCount(event.authToken, event.user);
+                let response = {
+                    success: true,
+                    message: "Get followees count successful",
+                    count: count,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when getting followees count");
+                throw error;
+            }
         });
     }
 }

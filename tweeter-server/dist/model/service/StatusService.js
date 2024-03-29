@@ -17,7 +17,13 @@ class StatusService {
             const authToken = tweeter_shared_1.AuthToken.fromDto(authTokeDto);
             const user = tweeter_shared_1.User.fromDto(userDto);
             const lastStatusItem = tweeter_shared_1.Status.fromDto(lastItemDto);
-            console.log("Last status item: ", lastStatusItem);
+            if (!authToken) {
+                throw new Error("[AuthError] unauthenticated request");
+            }
+            if (!user) {
+                throw new Error("[Bad Request] user for loadingStoryItems does not exist");
+            }
+            // console.log("Last status item: ", lastStatusItem)
             // TODO: Replace with the result of calling database
             return tweeter_shared_1.FakeData.instance.getPageOfStatuses(lastStatusItem, pageSize);
         });
@@ -27,6 +33,12 @@ class StatusService {
             const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
             const user = tweeter_shared_1.User.fromDto(userDto);
             const lastStatusItem = tweeter_shared_1.Status.fromDto(lastItem);
+            if (!authToken) {
+                throw new Error("[AuthError] unauthenticated request");
+            }
+            if (!user) {
+                throw new Error("[Bad Request] user for loadingFeedItems does not exist");
+            }
             // TODO: Replace with the result of calling database
             return tweeter_shared_1.FakeData.instance.getPageOfStatuses(lastStatusItem, pageSize);
         });
@@ -35,9 +47,13 @@ class StatusService {
         return __awaiter(this, void 0, void 0, function* () {
             const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
             const newStatus = tweeter_shared_1.Status.fromDto(newStatusDto);
-            // Pause so we can see the logging out message. Remove when connected to the server
+            if (!authToken) {
+                throw new Error("[AuthError] unauthenticated request");
+            }
+            if (!newStatus) {
+                throw new Error("[Bad Request] new status is invalid or empty");
+            }
             // TODO: Replace with the result of calling database
-            yield new Promise((f) => setTimeout(f, 2000));
         });
     }
 }

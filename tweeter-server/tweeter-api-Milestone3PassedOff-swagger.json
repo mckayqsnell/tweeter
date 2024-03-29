@@ -1,0 +1,1365 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "2024-03-29T23:40:00Z",
+    "title" : "tweeter-api"
+  },
+  "host" : "ur1av6d756.execute-api.us-west-2.amazonaws.com",
+  "basePath" : "/Milestone3PassedOff",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/service" : {
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/follow" : {
+      "post" : {
+        "description" : "post method for following a user. Returns the updated followeeCount and followerCount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "FollowOrUnFollowRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/FollowOrUnFollowRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/getFolloweesCount" : {
+      "post" : {
+        "description" : "post method for getting the followeesCount of a particular user.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "GetFollowCountRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/GetFollowCountRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/getFollowersCount" : {
+      "post" : {
+        "description" : "post method for getting the followers count of a particular user",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "GetFollowCountRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/GetFollowCountRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/getIsFollower" : {
+      "post" : {
+        "description" : "post method for getting wether or not a user is a follower of another user",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "GetIsFollowerStatusRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/GetIsFollowerStatusRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/getUser" : {
+      "post" : {
+        "description" : "method for getting a user. Used when a user is selected in the UI",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "GetUserRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/GetUserRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/loadMoreFeedItems" : {
+      "post" : {
+        "description" : "method for loading more feed items in the feed items tab",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "LoadMoreStatusItemsRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LoadMoreStatusItemsRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/loadMoreFollowees" : {
+      "post" : {
+        "description" : "method for retrieving more followees items for the followees tab",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "LoadMoreFollowItemsRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LoadMoreFollowItemsRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/loadMoreFollowers" : {
+      "post" : {
+        "description" : "method for retrieving more followers items for the followers tab",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "LoadMoreFollowItemsRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LoadMoreFollowItemsRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/loadMoreStoryItems" : {
+      "post" : {
+        "description" : "method for loading more story items for the story tab",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "LoadMoreStatusItemsRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LoadMoreStatusItemsRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/login" : {
+      "post" : {
+        "description" : "method for logging in. Returns a user and authToken",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Content-type",
+          "in" : "header",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "LoginRequestModel",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LoginRequestModel"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/logout" : {
+      "post" : {
+        "description" : "method for logging out. Deletes the authToken of the current user who logged out",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "LogoutRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LogoutRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/postStatus" : {
+      "post" : {
+        "description" : "method for posting a status.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "PostStatusRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/PostStatusRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/register" : {
+      "post" : {
+        "description" : "method for register a user. Makes user in the database and returns a user and a authtoken",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "RegisterRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/RegisterRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/unfollow" : {
+      "post" : {
+        "description" : "method for unfollowing a user. Returns the updated followee and follower counts",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "FollowOrUnFollowRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/FollowOrUnFollowRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "401" : {
+            "description" : "401 response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/Empty"
+            },
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "RegisterRequest" : {
+      "type" : "object",
+      "required" : [ "alias", "firstName", "imageStringBase64", "lastName", "password" ],
+      "properties" : {
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "alias" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "imageStringBase64" : {
+          "type" : "string"
+        }
+      }
+    },
+    "GetUserRequestAuthToken" : {
+      "type" : "object",
+      "required" : [ "token" ],
+      "properties" : {
+        "token" : {
+          "type" : "string"
+        }
+      }
+    },
+    "GetUserRequest" : {
+      "type" : "object",
+      "required" : [ "alias", "authToken" ],
+      "properties" : {
+        "authToken" : {
+          "$ref" : "#/definitions/GetUserRequestAuthToken"
+        },
+        "alias" : {
+          "type" : "string"
+        }
+      }
+    },
+    "GetFollowCountRequest" : {
+      "type" : "object",
+      "required" : [ "authToken", "selectedUser", "user" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          }
+        },
+        "user" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        },
+        "selectedUser" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        }
+      }
+    },
+    "Error" : {
+      "type" : "object",
+      "properties" : {
+        "message" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Error Schema"
+    },
+    "GetIsFollowerStatusRequest" : {
+      "type" : "object",
+      "required" : [ "authToken", "selectedUser", "user" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          }
+        },
+        "user" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        },
+        "selectedUser" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        }
+      }
+    },
+    "LoginRequestModel" : {
+      "type" : "object",
+      "required" : [ "alias", "password" ],
+      "properties" : {
+        "alias" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        }
+      },
+      "title" : "LoginRequest"
+    },
+    "Empty" : {
+      "type" : "object",
+      "title" : "Empty Schema"
+    },
+    "FollowOrUnFollowRequest" : {
+      "type" : "object",
+      "required" : [ "authToken", "userToFollowOrUnFollow" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          }
+        },
+        "userToFollowOrUnFollow" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        }
+      }
+    },
+    "LoadMoreFollowItemsRequest" : {
+      "type" : "object",
+      "required" : [ "authToken", "lastItem", "pageSize", "user" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          }
+        },
+        "user" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        },
+        "pageSize" : {
+          "type" : "integer",
+          "minimum" : 1.0
+        },
+        "lastItem" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        }
+      }
+    },
+    "LoadMoreStatusItemsRequest" : {
+      "type" : "object",
+      "required" : [ "authToken", "lastItem", "pageSize", "user" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          }
+        },
+        "user" : {
+          "type" : "object",
+          "properties" : {
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          }
+        },
+        "pageSize" : {
+          "type" : "integer",
+          "minimum" : 1.0
+        },
+        "lastItem" : {
+          "type" : "object",
+          "properties" : {
+            "statusId" : {
+              "type" : "string"
+            },
+            "content" : {
+              "type" : "string"
+            },
+            "timeStamp" : {
+              "type" : "string",
+              "format" : "date-time"
+            },
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "LogoutRequest" : {
+      "type" : "object",
+      "required" : [ "authToken" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "token" ]
+        }
+      }
+    },
+    "PostStatusRequest" : {
+      "type" : "object",
+      "required" : [ "authToken", "newStatus" ],
+      "properties" : {
+        "authToken" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string"
+            }
+          }
+        },
+        "newStatus" : {
+          "type" : "object",
+          "properties" : {
+            "statusId" : {
+              "type" : "string"
+            },
+            "content" : {
+              "type" : "string"
+            },
+            "timeStamp" : {
+              "type" : "string",
+              "format" : "date-time"
+            },
+            "userId" : {
+              "type" : "string"
+            },
+            "username" : {
+              "type" : "string"
+            },
+            "alias" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

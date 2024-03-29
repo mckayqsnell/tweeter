@@ -14,13 +14,19 @@ const UserService_1 = require("../model/service/UserService");
 class GetUserLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield new UserService_1.UserService().getUser(event.authToken, event.alias);
-            let response = {
-                success: true,
-                message: "Get user successful",
-                user: user ? user.dto : null,
-            };
-            return response;
+            try {
+                const user = yield new UserService_1.UserService().getUser(event.authToken, event.alias);
+                let response = {
+                    success: true,
+                    message: "Get user successful",
+                    user: user ? user.dto : null,
+                };
+                return response;
+            }
+            catch (error) {
+                console.error(error ? error : "An error occurred when getting a user");
+                throw error;
+            }
         });
     }
 }
