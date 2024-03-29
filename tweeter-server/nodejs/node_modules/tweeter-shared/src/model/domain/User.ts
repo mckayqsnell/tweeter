@@ -55,7 +55,7 @@ export class User {
   }
 
   public equals(other: User): boolean {
-    return this._alias === other._alias;
+    return other && this._alias === other._alias;
   }
 
   public static fromJson(json: string | null | undefined): User | null {
@@ -82,7 +82,9 @@ export class User {
   }
 
   public static fromDto(dto: UserDto | null | undefined): User | null {
-    return dto ? new User(dto.firstName, dto.lastName, dto.alias, dto.imageUrl) : null;
+    return dto
+      ? new User(dto.firstName, dto.lastName, dto.alias, dto.imageUrl)
+      : null;
   }
 
   public get dto(): UserDto {

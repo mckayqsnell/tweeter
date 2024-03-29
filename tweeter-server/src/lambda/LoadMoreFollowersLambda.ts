@@ -3,7 +3,9 @@ import { LoadMoreFollowItemsResponse } from "tweeter-shared/dist/model/net/Respo
 import { FollowService } from "../model/service/FollowService";
 
 export class LoadMoreFollowersLambda {
-    static async handler(event: LoadMoreFollowItemsRequest): Promise<LoadMoreFollowItemsResponse> {
+    static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
+        event = LoadMoreFollowItemsRequest.fromJSON(event);
+        
         const [followers, hasMore] = await new FollowService().loadMoreFollowers(event.authToken, event.user, event.pageSize, event.lastItem);
         
         let response = {

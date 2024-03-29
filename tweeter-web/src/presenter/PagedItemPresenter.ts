@@ -5,6 +5,7 @@ export const PAGE_SIZE = 10;
 
 export interface PagedItemView<T> extends View {
   addItems: (newItems: T[]) => void;
+  setHasMoreItems: (hasMore: boolean) => void;
 }
 
 export abstract class PagedItemPresenter<T, U> extends Presenter {
@@ -46,11 +47,15 @@ export abstract class PagedItemPresenter<T, U> extends Presenter {
   public async loadMoreItems(authToken: AuthToken, displayedUser: User): Promise<void> {
     this.doFailureReportingOperation(async () => {
       if (this.hasMoreItems) {
-        let [newItems, hasMore] = await this.getMoreItems(authToken, displayedUser);
+        let [newItems, hasMore] = await this.getMoreItems(
+          authToken,
+          displayedUser
+        );
 
         this.hasMoreItems = hasMore;
         this.lastItem = newItems[newItems.length - 1];
         this.view.addItems(newItems);
+        this.view.setHasMoreItems(hasMore);
       }
     }, this.getItemDescription());
   }

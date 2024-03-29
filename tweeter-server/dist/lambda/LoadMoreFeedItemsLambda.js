@@ -10,10 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoadMoreFeedItemsLambda = void 0;
+const Request_1 = require("tweeter-shared/dist/model/net/Request");
 const StatusService_1 = require("../model/service/StatusService");
 class LoadMoreFeedItemsLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
             const [feedItems, hasMorePages] = yield new StatusService_1.StatusService().loadMoreFeedItems(event.authToken, event.user, event.pageSize, event.lastItem);
             let response = {
                 success: true,

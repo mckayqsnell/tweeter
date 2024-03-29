@@ -15,6 +15,8 @@ function ItemScroller<T, U>({
 }: Props<T, U>) {
   const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<T[]>([]);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+
 
   // Required to allow the addItems method to see the current value of 'items'
   // instead of the value from when the closure was created.
@@ -32,6 +34,7 @@ function ItemScroller<T, U>({
   const listener: PagedItemView<T> = {
     addItems: (newItems: T[]) =>
       setItems([...itemsReference.current, ...newItems]),
+    setHasMoreItems: setHasMoreItems,
     displayErrorMessage: displayErrorMessage,
   };
 

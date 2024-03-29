@@ -3,7 +3,9 @@ import { LoadMoreStatusItemsResponse } from "tweeter-shared/dist/model/net/Respo
 import { StatusService } from "../model/service/StatusService";
 
 export class LoadMoreFeedItemsLambda {
-    static async handler(event: LoadMoreStatusItemsRequest): Promise<LoadMoreStatusItemsResponse> {
+    static async handler(event: any): Promise<LoadMoreStatusItemsResponse> {
+        event = LoadMoreStatusItemsRequest.fromJSON(event);
+
         const [feedItems, hasMorePages] = await new StatusService().loadMoreFeedItems(event.authToken,event.user, event.pageSize, event.lastItem);
     
         let response: LoadMoreStatusItemsResponse = {

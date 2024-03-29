@@ -2,8 +2,24 @@ import { LoadMoreFollowItemsRequest, LoadMoreFollowItemsResponse } from "tweeter
 import { FollowService } from "../model/service/FollowService";
 
 export class LoadMoreFolloweesLambda {
-    static async handler(event: LoadMoreFollowItemsRequest): Promise<LoadMoreFollowItemsResponse> {
-        const [followees, hasMorePages] = await new FollowService().loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
+    static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
+        console.log("LoadMoreFolloweesLambda.handler: event = ", event);
+        // deserialize the event into a LoadMoreFollowItemsRequest
+        event = LoadMoreFollowItemsRequest.fromJSON(event);
+
+        console.log("LoadMoreFolloweesRequest deserialized")
+        console.log("LoadMoreFolloweesLambda.handler: event = ", event);
+
+        if (!event.authToken || !event.user) {
+            return {
+                success: false,
+                message: "Request is missing required fields",
+                users: [],
+                hasMorePages: false
+            };
+        }
+      
+      const [followees, hasMorePages] = await new FollowService().loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
         
         let response = {
           success: true,

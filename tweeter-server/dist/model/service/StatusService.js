@@ -12,11 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatusService = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
 class StatusService {
-    loadMoreStoryItems(authTokeDto, userDto, pageSize, lastItem) {
+    loadMoreStoryItems(authTokeDto, userDto, pageSize, lastItemDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const authToken = tweeter_shared_1.AuthToken.fromDto(authTokeDto);
             const user = tweeter_shared_1.User.fromDto(userDto);
-            const lastStatusItem = tweeter_shared_1.Status.fromDto(lastItem);
+            const lastStatusItem = tweeter_shared_1.Status.fromDto(lastItemDto);
+            console.log("Last status item: ", lastStatusItem);
             // TODO: Replace with the result of calling database
             return tweeter_shared_1.FakeData.instance.getPageOfStatuses(lastStatusItem, pageSize);
         });

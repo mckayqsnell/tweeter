@@ -1,0 +1,45 @@
+{
+    "FunctionName": "loadMoreFeedItems",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:loadMoreFeedItems:13",
+    "Runtime": "nodejs20.x",
+    "Role": "arn:aws:iam::108857565390:role/cs340lambda",
+    "Handler": "dist/lambda/LoadMoreFeedItemsLambda.handler",
+    "CodeSize": 15134,
+    "Description": "",
+    "Timeout": 3,
+    "MemorySize": 128,
+    "LastModified": "2024-03-29T05:53:01.000+0000",
+    "CodeSha256": "BsENAPAgDi2ye/sBTHtWOPXNOZBgmxC/aBaPSRccAwE=",
+    "Version": "13",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "b8bd7702-ca91-4ee8-8530-7e84db8cc15d",
+    "Layers": [
+        {
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:22",
+            "CodeSize": 1299755
+        }
+    ],
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
+    "PackageType": "Zip",
+    "Architectures": [
+        "x86_64"
+    ],
+    "EphemeralStorage": {
+        "Size": 512
+    },
+    "SnapStart": {
+        "ApplyOn": "None",
+        "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+        "RuntimeVersionArn": "arn:aws:lambda:us-west-2::runtime:ecf83feba464e64dae4dc1a80327f8f786abd91aed7e0d884474a062cd1a7d63"
+    },
+    "LoggingConfig": {
+        "LogFormat": "Text",
+        "LogGroup": "/aws/lambda/loadMoreFeedItems"
+    }
+}

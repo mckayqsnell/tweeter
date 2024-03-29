@@ -3,7 +3,9 @@ import { PostStatusResponse } from "tweeter-shared/dist/model/net/Response";
 import { StatusService } from "../model/service/StatusService";
 
 export class PostStatusLambda {
-    static async handler(event: PostStatusRequest): Promise<PostStatusResponse> {
+    static async handler(event: any): Promise<PostStatusResponse> {
+        event = PostStatusRequest.fromJSON(event);
+        
         await new StatusService().postStatus(event.authToken, event.newStatus);
         let response: PostStatusResponse = {
             success: true,

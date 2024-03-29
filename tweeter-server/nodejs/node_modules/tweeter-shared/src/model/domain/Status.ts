@@ -5,7 +5,7 @@ import moment from "moment";
 
 export class Status {
   private _post: string;
-  private _user: User | null
+  private _user: User | null;
   private _timestamp: number;
   private _segments: PostSegment[];
 
@@ -17,6 +17,10 @@ export class Status {
   }
 
   private getPostSegments(post: string): PostSegment[] {
+    // if (!post) {
+    //   return [];
+    // }
+
     let segments: PostSegment[] = [];
 
     let startIndex = 0;
@@ -53,6 +57,9 @@ export class Status {
   }
 
   private static getSortedReferences(post: string): PostSegment[] {
+    // if (!post) {
+    //   return [];
+    // }
     let references = [
       ...Status.parseUrlReferences(post),
       ...Status.parseMentionReferences(post),
@@ -67,6 +74,10 @@ export class Status {
   }
 
   private static parseUrlReferences(post: string): PostSegment[] {
+    // if (!post) {
+    //   return [];
+    // }
+
     let references: PostSegment[] = [];
 
     let urls: string[] = Status.parseUrls(post);
@@ -92,6 +103,9 @@ export class Status {
   }
 
   private static parseUrls(post: string): string[] {
+    // if (!post) {
+    //   return [];
+    // }
     let urls: string[] = [];
 
     for (let word of post.split(/(\s+)/)) {
@@ -139,6 +153,9 @@ export class Status {
   }
 
   private static parseMentionReferences(post: string): PostSegment[] {
+    // if (!post) {
+    //   return [];
+    // }
     let references: PostSegment[] = [];
 
     let mentions: string[] = Status.parseMentions(post);
@@ -169,6 +186,9 @@ export class Status {
   }
 
   private static parseMentions(post: string): string[] {
+    // if (!post) {
+    //   return [];
+    // }
     let mentions: string[] = [];
 
     for (let word of post.split(/(\s+)/)) {
@@ -184,6 +204,9 @@ export class Status {
   }
 
   private static parseNewlines(post: string): PostSegment[] {
+    // if (!post) {
+    //   return [];
+    // }
     let newlines: PostSegment[] = [];
 
     const regex = /\n/g;
@@ -237,8 +260,13 @@ export class Status {
   }
 
   public equals(other: Status): boolean {
+    if(!other) {
+      return false;
+    }
+    
     return (
-      this._user!.equals(other.user) &&
+      other &&
+      this._user!.equals(other.user) && // Assuming other.user is not null
       this._timestamp === other._timestamp &&
       this._post === other.post
     );
@@ -277,7 +305,9 @@ export class Status {
   }
 
   public static fromDto(dto: StatusDto | null | undefined): Status | null {
-    return dto ? new Status(dto.post, User.fromDto(dto.user), dto.timestamp) : null;
+    return dto
+      ? new Status(dto.post, User.fromDto(dto.user), dto.timestamp)
+      : null;
   }
 
   public get dto(): StatusDto {
@@ -285,7 +315,6 @@ export class Status {
       post: this.post,
       user: this.user.dto,
       timestamp: this.timestamp,
-      segments: this.segments,
     };
   }
 

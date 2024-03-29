@@ -10,10 +10,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoadMoreFolloweesLambda = void 0;
+const tweeter_shared_1 = require("tweeter-shared");
 const FollowService_1 = require("../model/service/FollowService");
 class LoadMoreFolloweesLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("LoadMoreFolloweesLambda.handler: event = ", event);
+            // deserialize the event into a LoadMoreFollowItemsRequest
+            event = tweeter_shared_1.LoadMoreFollowItemsRequest.fromJSON(event);
+            console.log("LoadMoreFolloweesRequest deserialized");
+            console.log("LoadMoreFolloweesLambda.handler: event = ", event);
+            if (!event.authToken || !event.user) {
+                return {
+                    success: false,
+                    message: "Request is missing required fields",
+                    users: [],
+                    hasMorePages: false
+                };
+            }
             const [followees, hasMorePages] = yield new FollowService_1.FollowService().loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
             let response = {
                 success: true,
