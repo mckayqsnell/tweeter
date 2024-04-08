@@ -3,13 +3,18 @@ import {
   GetIsFollowerStatusResponse,
 } from "tweeter-shared";
 import { FollowService } from "../model/service/FollowService";
+import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
 
 export class GetIsFollowerLambda {
   static async handler(
     event: GetIsFollowerStatusRequest
   ): Promise<GetIsFollowerStatusResponse> {
+    const factory = DynamoDBDAOFactory.getInstance();
+
+    const followService = new FollowService(factory);
+
     try {
-      const isFollower = await new FollowService().getIsFollowerStatus(
+      const isFollower = await followService.getIsFollowerStatus(
         event.authToken,
         event.user,
         event.selectedUser

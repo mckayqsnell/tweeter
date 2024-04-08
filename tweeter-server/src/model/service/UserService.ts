@@ -1,6 +1,15 @@
 import { AuthToken, AuthTokenDto, FakeData, User } from "tweeter-shared";
+import { IFollowDAO } from "../daos/interfaces/IFollowDAO";
+import { IDAOFactory } from "../factory/IDAOFactory";
 
 export class UserService {
+
+  private followDAO: IFollowDAO;
+
+  constructor(factory: IDAOFactory) {
+    this.followDAO = factory.getFollowDAO();
+  }
+
   public async login(
     alias: string,
     password: string

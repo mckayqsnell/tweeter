@@ -1,20 +1,20 @@
 {
     "FunctionName": "getIsFollower",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getIsFollower:8",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getIsFollower:10",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/GetIsFollowerLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:15.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "8",
+    "LastModified": "2024-04-08T03:40:53.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "10",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "1d8120d8-6401-4ce8-b246-d9a174be31f7",
+    "RevisionId": "a8f2b03f-d177-4fb5-8a5e-fe26e7a2537d",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

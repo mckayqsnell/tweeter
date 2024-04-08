@@ -1,20 +1,20 @@
 {
     "FunctionName": "follow",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:follow:7",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:follow:9",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/FollowLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:15.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "7",
+    "LastModified": "2024-04-08T03:40:50.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "9",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "623392d8-091b-4a93-9d38-661998e86f0b",
+    "RevisionId": "2be2cf45-3792-4359-ba88-cddedb297d60",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

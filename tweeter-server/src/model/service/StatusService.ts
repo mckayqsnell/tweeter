@@ -7,8 +7,20 @@ import {
   User,
   UserDto,
 } from "tweeter-shared";
+import { IFeedDAO } from "../daos/interfaces/IFeedDAO";
+import { IStoryDAO } from "../daos/interfaces/IStoryDAO";
+import { IDAOFactory } from "../factory/IDAOFactory";
 
 export class StatusService {
+
+  private feedDAO: IFeedDAO;
+  private storyDAO: IStoryDAO;
+
+  constructor(factory: IDAOFactory) {
+    this.feedDAO = factory.getFeedDAO();
+    this.storyDAO = factory.getStoryDAO();
+  }
+  
   public async loadMoreStoryItems(
     authTokeDto: AuthTokenDto,
     userDto: UserDto,

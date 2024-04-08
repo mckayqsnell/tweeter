@@ -12,12 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostStatusLambda = void 0;
 const Request_1 = require("tweeter-shared/dist/model/net/Request");
 const StatusService_1 = require("../model/service/StatusService");
+const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
 class PostStatusLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
+            const statusService = new StatusService_1.StatusService(factory);
             try {
                 event = Request_1.PostStatusRequest.fromJSON(event);
-                yield new StatusService_1.StatusService().postStatus(event.authToken, event.newStatus);
+                yield statusService.postStatus(event.authToken, event.newStatus);
                 let response = {
                     success: true,
                     message: "Post status successful",

@@ -1,20 +1,20 @@
 {
     "FunctionName": "loadMoreStoryItems",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:loadMoreStoryItems:14",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:loadMoreStoryItems:16",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/LoadMoreStoryItemsLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:16.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "14",
+    "LastModified": "2024-04-08T03:40:50.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "16",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "ef558a7f-6b94-4696-a3b4-db1551a5fd07",
+    "RevisionId": "08c50e9c-1b26-4547-a4e7-8a737ba43980",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

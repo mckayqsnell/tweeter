@@ -11,11 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetFollowersCountLambda = void 0;
 const FollowService_1 = require("../model/service/FollowService");
+const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
 class GetFollowersCountLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
+            const followService = new FollowService_1.FollowService(factory);
             try {
-                const count = yield new FollowService_1.FollowService().getFollowersCount(event.authToken, event.user);
+                const count = yield followService.getFollowersCount(event.authToken, event.user);
                 let response = {
                     success: true,
                     message: "Get followers count successful",

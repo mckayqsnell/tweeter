@@ -12,21 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoadMoreFolloweesLambda = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
 const FollowService_1 = require("../model/service/FollowService");
+const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
 class LoadMoreFolloweesLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
+            const followService = new FollowService_1.FollowService(factory);
             try {
                 // deserialize the event into a LoadMoreFollowItemsRequest
                 event = tweeter_shared_1.LoadMoreFollowItemsRequest.fromJSON(event);
-                if (!event.authToken || !event.user) {
-                    return {
-                        success: false,
-                        message: "Request is missing required fields",
-                        users: [],
-                        hasMorePages: false,
-                    };
-                }
-                const [followees, hasMorePages] = yield new FollowService_1.FollowService().loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
+                const [followees, hasMorePages] = yield followService.loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
                 let response = {
                     success: true,
                     message: "Load more followees successful",

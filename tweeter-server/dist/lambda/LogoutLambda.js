@@ -11,11 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogoutLambda = void 0;
 const UserService_1 = require("../model/service/UserService");
+const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
 class LogoutLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
+            const userService = new UserService_1.UserService(factory);
             try {
-                yield new UserService_1.UserService().logout(event.authToken);
+                yield userService.logout(event.authToken);
                 let response = {
                     success: true,
                     message: "Logout successful",

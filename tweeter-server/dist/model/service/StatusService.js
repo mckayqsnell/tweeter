@@ -12,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatusService = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
 class StatusService {
+    constructor(factory) {
+        this.feedDAO = factory.getFeedDAO();
+        this.storyDAO = factory.getStoryDAO();
+    }
     loadMoreStoryItems(authTokeDto, userDto, pageSize, lastItemDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const authToken = tweeter_shared_1.AuthToken.fromDto(authTokeDto);

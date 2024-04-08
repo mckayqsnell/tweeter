@@ -1,20 +1,20 @@
 {
     "FunctionName": "getFolloweesCount",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getFolloweesCount:7",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getFolloweesCount:9",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/GetFolloweesCountLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:14.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "7",
+    "LastModified": "2024-04-08T03:40:50.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "9",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "276388aa-9645-493e-a5ea-b105af39a206",
+    "RevisionId": "059bb2f6-f521-4b2e-bfd0-932f4989b520",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

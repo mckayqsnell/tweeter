@@ -1,29 +1,24 @@
 import { LoadMoreStatusItemsRequest } from "tweeter-shared/dist/model/net/Request";
 import { LoadMoreStatusItemsResponse } from "tweeter-shared/dist/model/net/Response";
 import { StatusService } from "../model/service/StatusService";
+import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
 
 export class LoadMoreStoryItemsLambda {
   static async handler(event: any): Promise<LoadMoreStatusItemsResponse> {
+    const factory = DynamoDBDAOFactory.getInstance();
+
+    const statusService = new StatusService(factory);
+
     try {
       // deserialize the event into a LoadMoreStatusItemsRequest
       event = LoadMoreStatusItemsRequest.fromJSON(event);
 
-      if (!event.authToken || !event.user) {
-        return {
-          success: false,
-          message: "Request is missing required fields",
-          statusItems: [],
-          hasMorePages: false,
-        };
-      }
-
-      const [storyItems, hasMorePages] =
-        await new StatusService().loadMoreStoryItems(
-          event.authToken,
-          event.user,
-          event.pageSize,
-          event.lastItem
-        );
+      const [storyItems, hasMorePages] = await statusService.loadMoreStoryItems(
+        event.authToken,
+        event.user,
+        event.pageSize,
+        event.lastItem
+      );
 
       let response: LoadMoreStatusItemsResponse = {
         success: true,

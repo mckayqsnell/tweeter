@@ -1,20 +1,20 @@
 {
     "FunctionName": "login",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:login:15",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:login:17",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/LoginLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:18.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "15",
+    "LastModified": "2024-04-08T03:40:52.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "17",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "6cec2240-e819-4f06-a79c-0e8fe5f97d12",
+    "RevisionId": "36295c21-2c01-461f-8917-101e14b41f4b",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

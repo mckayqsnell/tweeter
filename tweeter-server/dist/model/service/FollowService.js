@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FollowService = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
 class FollowService {
+    constructor(factory) {
+        this.followDAO = factory.getFollowDAO();
+    }
     loadMoreFollowers(authTokenDto, userDto, pageSize, lastItem) {
         return __awaiter(this, void 0, void 0, function* () {
             const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);

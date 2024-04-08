@@ -1,11 +1,16 @@
 import { AuthenticateResponse } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
 import { RegisterRequest } from "tweeter-shared/dist/model/net/Request";
+import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
 
 export class RegisterLambda {
   static async handler(event: RegisterRequest): Promise<AuthenticateResponse> {
+    const factory = DynamoDBDAOFactory.getInstance();
+
+    const userService = new UserService(factory);
+
     try {
-      const [user, token] = await new UserService().register(
+      const [user, token] = await userService.register(
         event.firstName,
         event.lastName,
         event.alias,
@@ -22,7 +27,9 @@ export class RegisterLambda {
 
       return response;
     } catch (error) {
-      console.error(error ? error : "An error occurred when registering a user");
+      console.error(
+        error ? error : "An error occurred when registering a user"
+      );
       throw error;
     }
   }

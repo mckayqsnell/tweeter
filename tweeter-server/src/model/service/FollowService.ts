@@ -5,8 +5,17 @@ import {
   User,
   UserDto,
 } from "tweeter-shared";
+import { IFollowDAO } from "../daos/interfaces/IFollowDAO";
+import { IDAOFactory } from "../factory/IDAOFactory";
 
 export class FollowService {
+
+  private followDAO: IFollowDAO;
+
+  constructor(factory: IDAOFactory) {
+    this.followDAO = factory.getFollowDAO();
+  }
+
   public async loadMoreFollowers(
     authTokenDto: AuthTokenDto,
     userDto: UserDto,

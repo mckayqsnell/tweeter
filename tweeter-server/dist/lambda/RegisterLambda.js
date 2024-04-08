@@ -11,11 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterLambda = void 0;
 const UserService_1 = require("../model/service/UserService");
+const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
 class RegisterLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
+            const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
+            const userService = new UserService_1.UserService(factory);
             try {
-                const [user, token] = yield new UserService_1.UserService().register(event.firstName, event.lastName, event.alias, event.password, event.imageStringBase64);
+                const [user, token] = yield userService.register(event.firstName, event.lastName, event.alias, event.password, event.imageStringBase64);
                 let response = {
                     success: true,
                     message: "Login successful",

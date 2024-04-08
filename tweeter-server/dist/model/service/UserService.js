@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
 class UserService {
+    constructor(factory) {
+        this.followDAO = factory.getFollowDAO();
+    }
     login(alias, password) {
         return __awaiter(this, void 0, void 0, function* () {
             // TODO: Replace with result of calling to the database

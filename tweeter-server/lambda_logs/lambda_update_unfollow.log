@@ -1,20 +1,20 @@
 {
     "FunctionName": "unfollow",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:unfollow:8",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:unfollow:10",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/UnFollowLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:17.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "8",
+    "LastModified": "2024-04-08T03:40:51.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "10",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "ee096c96-1e48-4dc1-91da-9c5ada5c4069",
+    "RevisionId": "a3ff3d12-7e78-4458-9348-384fbdc9e2f7",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

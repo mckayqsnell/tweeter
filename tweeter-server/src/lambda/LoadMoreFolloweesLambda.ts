@@ -3,29 +3,24 @@ import {
   LoadMoreFollowItemsResponse,
 } from "tweeter-shared";
 import { FollowService } from "../model/service/FollowService";
+import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
 
 export class LoadMoreFolloweesLambda {
   static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
+    const factory = DynamoDBDAOFactory.getInstance();
+
+    const followService = new FollowService(factory);
+
     try {
       // deserialize the event into a LoadMoreFollowItemsRequest
       event = LoadMoreFollowItemsRequest.fromJSON(event);
 
-      if (!event.authToken || !event.user) {
-        return {
-          success: false,
-          message: "Request is missing required fields",
-          users: [],
-          hasMorePages: false,
-        };
-      }
-
-      const [followees, hasMorePages] =
-        await new FollowService().loadMoreFollowees(
-          event.authToken,
-          event.user,
-          event.pageSize,
-          event.lastItem
-        );
+      const [followees, hasMorePages] = await followService.loadMoreFollowees(
+        event.authToken,
+        event.user,
+        event.pageSize,
+        event.lastItem
+      );
 
       let response = {
         success: true,

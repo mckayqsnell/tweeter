@@ -1,20 +1,20 @@
 {
     "FunctionName": "postStatus",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:postStatus:15",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:postStatus:17",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/PostStatusLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:15.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "15",
+    "LastModified": "2024-04-08T03:40:50.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "17",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "ee777914-21b6-4743-ab57-12b9fd3a90a4",
+    "RevisionId": "96d18520-e3c6-47ce-9c8c-227d8ee8fb73",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

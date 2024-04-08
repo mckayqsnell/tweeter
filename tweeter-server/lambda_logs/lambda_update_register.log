@@ -1,20 +1,20 @@
 {
     "FunctionName": "register",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:register:14",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:register:16",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/RegisterLambda.handler",
-    "CodeSize": 16070,
+    "CodeSize": 21463,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-03-29T23:13:18.000+0000",
-    "CodeSha256": "lAAWkchf57f1f+1hyuG0UJnhcTS6tlQwDdpH2PVl98E=",
-    "Version": "14",
+    "LastModified": "2024-04-08T03:40:54.000+0000",
+    "CodeSha256": "yBkrNVSSyf/O0CFtwjBTaJ82H8WCLbXJ72hX81awXO4=",
+    "Version": "16",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "4b34d5f2-3250-473b-b00a-60e47bcdbe42",
+    "RevisionId": "88c77ee9-30a3-48fa-a87e-b877fbb44a85",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:24",

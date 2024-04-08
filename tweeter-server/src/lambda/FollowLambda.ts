@@ -3,13 +3,18 @@ import {
   FollowOrUnFollowResponse,
 } from "tweeter-shared";
 import { FollowService } from "../model/service/FollowService";
+import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
 
 export class FollowLambda {
   static async handler(
     event: FollowOrUnFollowRequest
   ): Promise<FollowOrUnFollowResponse> {
+    const factory = DynamoDBDAOFactory.getInstance();
+
+    const followService = new FollowService(factory);
+
     try {
-      const [followersCount, followeesCount] = await new FollowService().follow(
+      const [followersCount, followeesCount] = await followService.follow(
         event.authToken,
         event.userToFollowOrUnFollow
       );
