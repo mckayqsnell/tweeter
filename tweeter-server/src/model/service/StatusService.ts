@@ -10,13 +10,16 @@ import {
 import { IFeedDAO } from "../daos/interfaces/IFeedDAO";
 import { IStoryDAO } from "../daos/interfaces/IStoryDAO";
 import { IDAOFactory } from "../factory/IDAOFactory";
+import { BaseService } from "./BaseService";
+import { AuthService } from "./AuthService";
 
-export class StatusService {
+export class StatusService extends BaseService {
 
   private feedDAO: IFeedDAO;
   private storyDAO: IStoryDAO;
 
-  constructor(factory: IDAOFactory) {
+  constructor(factory: IDAOFactory, authService: AuthService) {
+    super(factory, authService);
     this.feedDAO = factory.getFeedDAO();
     this.storyDAO = factory.getStoryDAO();
   }

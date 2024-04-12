@@ -12,11 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogoutLambda = void 0;
 const UserService_1 = require("../model/service/UserService");
 const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
+const AuthService_1 = require("../model/service/AuthService");
 class LogoutLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
             const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
-            const userService = new UserService_1.UserService(factory);
+            const authService = new AuthService_1.AuthService(factory);
+            const userService = new UserService_1.UserService(factory, authService);
             try {
                 yield userService.logout(event.authToken);
                 let response = {

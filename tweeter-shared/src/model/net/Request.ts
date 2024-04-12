@@ -49,6 +49,15 @@ export class GetUserRequest implements TweeterRequest {
     this.authToken = authtoken.dto;
     this.alias = alias;
   }
+
+  public static fromJSON(json: any): GetUserRequest {
+    let authToken = new AuthToken(
+      json.authToken._token,
+      json.authToken._timestamp
+    );
+
+    return new GetUserRequest(authToken, json.alias);
+  }
 }
 
 export class LogoutRequest implements TweeterRequest {
@@ -56,6 +65,15 @@ export class LogoutRequest implements TweeterRequest {
 
   constructor(authtoken: AuthToken) {
     this.authToken = authtoken.dto;
+  }
+
+  public static fromJSON(json: any): LogoutRequest {
+    let authToken = new AuthToken(
+      json.authToken._token,
+      json.authToken._timestamp
+    );
+
+    return new LogoutRequest(authToken);
   }
 }
 
@@ -181,6 +199,29 @@ export class GetIsFollowerStatusRequest implements TweeterRequest {
     this.user = user.dto;
     this.selectedUser = selectedUser.dto;
   }
+
+  public static fromJSON(json: any): GetIsFollowerStatusRequest {
+    const authToken = new AuthToken(
+      json.authToken._token,
+      json.authToken._timestamp
+    );
+
+    const user = new User(
+      json.user._firstName,
+      json.user._lastName,
+      json.user._alias,
+      json.user._imageUrl
+    );
+
+    const selectedUser = new User(
+      json.selectedUser._firstName,
+      json.selectedUser._lastName,
+      json.selectedUser._alias,
+      json.selectedUser._imageUrl
+    );
+
+    return new GetIsFollowerStatusRequest(authToken, user, selectedUser);
+  }
 }
 
 // GetFollowersCount and GetFolloweesCount
@@ -192,6 +233,22 @@ export class GetFollowCountRequest implements TweeterRequest {
     this.authToken = authtoken.dto;
     this.user = user.dto;
   }
+
+  public static fromJSON(json: any): GetFollowCountRequest {
+    const authToken = new AuthToken(
+      json.authToken._token,
+      json.authToken._timestamp
+    );
+
+    const user = new User(
+      json.user._firstName,
+      json.user._lastName,
+      json.user._alias,
+      json.user._imageUrl
+    );
+
+    return new GetFollowCountRequest(authToken, user);
+  }
 }
 
 // Follow or Unfollow
@@ -202,6 +259,22 @@ export class FollowOrUnFollowRequest implements TweeterRequest {
   constructor(authtoken: AuthToken, userToFollowOrUnFollow: User) {
     this.authToken = authtoken.dto;
     this.userToFollowOrUnFollow = userToFollowOrUnFollow.dto;
+  }
+
+  public static fromJSON(json: any): FollowOrUnFollowRequest {
+    const authToken = new AuthToken(
+      json.authToken._token,
+      json.authToken._timestamp
+    );
+
+    const userToFollowOrUnFollow = new User(
+      json.userToFollowOrUnFollow._firstName,
+      json.userToFollowOrUnFollow._lastName,
+      json.userToFollowOrUnFollow._alias,
+      json.userToFollowOrUnFollow._imageUrl
+    );
+
+    return new FollowOrUnFollowRequest(authToken, userToFollowOrUnFollow);
   }
 }
 

@@ -1,75 +1,147 @@
-import { AuthToken, AuthTokenDto, FakeData, User } from "tweeter-shared";
-import { IFollowDAO } from "../daos/interfaces/IFollowDAO";
+import {
+  AuthTokenDto,
+  User,
+  UserDto,
+} from "tweeter-shared";
 import { IDAOFactory } from "../factory/IDAOFactory";
+import { IUserDAO } from "../daos/interfaces/IUserDAO";
+import { IS3StorageDAO } from "../daos/interfaces/IS3StorageDAO";
+import { AuthService } from "./AuthService";
+import { BaseService } from "./BaseService";
+import bcrypt from "bcryptjs";
 
-export class UserService {
+export class UserService extends BaseService {
+  private userDAO: IUserDAO;
+  private s3StorageDAO: IS3StorageDAO;
 
-  private followDAO: IFollowDAO;
-
-  constructor(factory: IDAOFactory) {
-    this.followDAO = factory.getFollowDAO();
+  constructor(factory: IDAOFactory, authService: AuthService) {
+    super(factory, authService);
+    this.userDAO = factory.getUserDAO();
+    this.s3StorageDAO = factory.getS3StorageDAO();
   }
 
-  public async login(
+  public login = async (
     alias: string,
     password: string
-  ): Promise<[User, AuthToken]> {
-    // TODO: Replace with result of calling to the database
-    let user = FakeData.instance.firstUser;
+  ): Promise<[UserDto, AuthTokenDto]> => {
+    this.validateRequiredFields([alias, password]);
 
-    if (!user) {
-      throw new Error(`[Bad Request] user login failed for ${alias}`);
+    try {
+      const userdb = await this.userDAO.login(alias, password);
+
+      if (!userdb) {
+        throw new Error(`[Bad Request] requested user ${alias} does not exist`);
+      }
+
+      //verify password
+      const isMatch = await bcrypt.compare(password, userdb.password);
+      if (!isMatch) {
+        throw new Error(`[AuthError] incorrect password`);
+      }
+
+      // Construct a userDTO
+      const userDto: UserDto = {
+        firstName: userdb.firstName,
+        lastName: userdb.lastName,
+        alias: userdb.alias,
+        imageUrl: userdb.imageUrl,
+      };
+
+      // store the AuthToken in the database
+      const authTokenDto = await this.authService.createAuthToken(alias);
+
+      return [userDto, authTokenDto];
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `[Internal Server Error] failed to login user ${alias}: ${error}`
+      );
     }
-    // TODO: have this return a messgae from the DAO as well(incorrect password, user not found, etc.)
-
-    return [user, FakeData.instance.authToken];
   }
 
-  public async register(
+  public register = async (
     firstName: string,
     lastName: string,
     alias: string,
     password: string,
     userImageBase64: string
-  ): Promise<[User, AuthToken]> {
-    // TODO: Replace with result of calling to the database
-    let user = FakeData.instance.firstUser;
+  ): Promise<[UserDto, AuthTokenDto]> => {
+    this.validateRequiredFields([ firstName, lastName, alias, password, userImageBase64 ]);
+    // Send the userImageBase64 to the S3StorageDAO to store the image and get the URL
+    try {
+      // Store the image in S3 and get the URL
+      const imageUrl = await this.s3StorageDAO.putImage(
+        `${alias}profileImage`,
+        userImageBase64
+      );
 
-    if (!user) {
-      throw new Error(`[Bad Request] user registration failed for ${alias}`);
+      // Hash the password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      await this.userDAO.register(
+        firstName,
+        lastName,
+        alias,
+        hashedPassword,
+        imageUrl
+      );
+
+      // Construct a userDTO
+      const userDto: UserDto = {
+        firstName: firstName,
+        lastName: lastName,
+        alias: alias,
+        imageUrl: imageUrl,
+      };
+      // store the AuthToken in the database
+      const authTokenDto = await this.authService.createAuthToken(alias);
+
+      return [userDto, authTokenDto];
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `[Internal Server Error] failed to register user ${alias}: ${error}`
+      );
     }
-    // TODO: have this return the message from the DAO (duplicate user, etc.)
-
-    return [user, FakeData.instance.authToken];
   }
 
-  public async getUser(
+  public getUser = async (
     authTokenDto: AuthTokenDto,
     alias: string
-  ): Promise<User | null> {
-    // TODO: Replace with the result of calling database
-    const authToken = AuthToken.fromDto(authTokenDto);
+  ): Promise<UserDto | null> => {
+    this.validateRequiredFields([authTokenDto, alias]);
 
-    if (!authToken) {
-      throw new Error("[AuthError] unauthenticated request");
-    }
+    try {
+      const success = await this.authService.validateAuthToken(authTokenDto);
+      if (!success) {
+        throw new Error("[AuthError] unauthenticated request");
+      }
 
-    const user = FakeData.instance.findUserByAlias(alias);
+      const userdb = await this.userDAO.getUser(alias);
+      if (!userdb) {
+        throw new Error(`[Bad Request] requested user ${alias} does not exist`);
+      }
 
-    if (!user) {
-      throw new Error(`[Bad Request] requested user ${alias} does not exist`);
-    }
+      const userDto = this.makeUserDto(userdb);
 
-    return user;
-  }
+      return userDto;
 
-  public async logout(authTokenDto: AuthTokenDto): Promise<void> {
-    // TODO: Replace with the result of calling database
-    const authToken = AuthToken.fromDto(authTokenDto);
-    if (!authToken) {
-      throw new Error("[AuthError] unauthenticated request");
+    } catch (error) {
+      throw new Error(`[AuthError] ${error}`);
     }
   }
 
-  // TODO: Implement actual logout logic, such as invalidating the authToken in the database
+  public logout = async (authTokenDto: AuthTokenDto): Promise<void> => {
+    this.validateRequiredFields([authTokenDto]);
+
+    try {
+      await this.authService.deleteAuthToken(authTokenDto);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `[Internal Server Error] failed to logout user: ${error}`
+      );
+    }
+  }
 }

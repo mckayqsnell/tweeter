@@ -4,16 +4,20 @@ import {
 } from "tweeter-shared";
 import { FollowService } from "../model/service/FollowService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class LoadMoreFolloweesLambda {
   static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
     const factory = DynamoDBDAOFactory.getInstance();
+    const authService = new AuthService(factory);
 
-    const followService = new FollowService(factory);
+    const followService = new FollowService(factory, authService);
 
     try {
       // deserialize the event into a LoadMoreFollowItemsRequest
       event = LoadMoreFollowItemsRequest.fromJSON(event);
+
+      console.log("LoadMoreFolloweesLambda event: ", event);
 
       const [followees, hasMorePages] = await followService.loadMoreFollowees(
         event.authToken,
@@ -25,7 +29,7 @@ export class LoadMoreFolloweesLambda {
       let response = {
         success: true,
         message: "Load more followees successful",
-        users: followees.map((user) => user.dto),
+        users: followees ? followees : [],
         hasMorePages: hasMorePages,
       };
 

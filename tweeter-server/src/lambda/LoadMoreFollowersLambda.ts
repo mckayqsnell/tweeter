@@ -2,12 +2,13 @@ import { LoadMoreFollowItemsRequest } from "tweeter-shared/dist/model/net/Reques
 import { LoadMoreFollowItemsResponse } from "tweeter-shared/dist/model/net/Response";
 import { FollowService } from "../model/service/FollowService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class LoadMoreFollowersLambda {
   static async handler(event: any): Promise<LoadMoreFollowItemsResponse> {
     const factory = DynamoDBDAOFactory.getInstance();
-
-    const followService = new FollowService(factory);
+    const authService = new AuthService(factory);
+    const followService = new FollowService(factory, authService);
 
     try {
       event = LoadMoreFollowItemsRequest.fromJSON(event);
@@ -22,7 +23,7 @@ export class LoadMoreFollowersLambda {
       let response = {
         success: true,
         message: "Successfully loaded more followers.",
-        users: followers.map((user) => user.dto),
+        users: followers ? followers : [],
         hasMorePages: hasMore,
       };
       return response;

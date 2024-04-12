@@ -1,21 +1,24 @@
-import { GetUserReponse } from "tweeter-shared";
+import { AuthTokenDto, GetUserReponse, UserDto } from "tweeter-shared";
 import { GetUserRequest } from "tweeter-shared/dist/model/net/Request";
 import { UserService } from "../model/service/UserService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class GetUserLambda {
-  static async handler(event: GetUserRequest): Promise<GetUserReponse> {
+  static async handler(event: any): Promise<GetUserReponse> {
     const factory = DynamoDBDAOFactory.getInstance();
+    const authService = new AuthService(factory);
 
-    const userService = new UserService(factory);
+    const userService = new UserService(factory, authService);
 
     try {
-      const user = await userService.getUser(event.authToken, event.alias);
+      const request = GetUserRequest.fromJSON(event);
+      const user = await userService.getUser(request.authToken, request.alias);
 
       let response: GetUserReponse = {
         success: true,
         message: "Get user successful",
-        user: user ? user.dto : null,
+        user: user ? user : null,
       };
 
       return response;

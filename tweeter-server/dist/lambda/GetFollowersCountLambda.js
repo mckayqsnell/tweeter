@@ -10,15 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetFollowersCountLambda = void 0;
+const tweeter_shared_1 = require("tweeter-shared");
 const FollowService_1 = require("../model/service/FollowService");
 const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
+const AuthService_1 = require("../model/service/AuthService");
 class GetFollowersCountLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
             const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
-            const followService = new FollowService_1.FollowService(factory);
+            const authService = new AuthService_1.AuthService(factory);
+            const followService = new FollowService_1.FollowService(factory, authService);
+            console.log("GetFollowersCountLambda event: ", event);
             try {
-                const count = yield followService.getFollowersCount(event.authToken, event.user);
+                const request = tweeter_shared_1.GetFollowCountRequest.fromJSON(event);
+                const count = yield followService.getFollowersCount(request.authToken, request.user);
                 let response = {
                     success: true,
                     message: "Get followers count successful",

@@ -13,19 +13,22 @@ exports.LoadMoreFolloweesLambda = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
 const FollowService_1 = require("../model/service/FollowService");
 const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
+const AuthService_1 = require("../model/service/AuthService");
 class LoadMoreFolloweesLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
             const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
-            const followService = new FollowService_1.FollowService(factory);
+            const authService = new AuthService_1.AuthService(factory);
+            const followService = new FollowService_1.FollowService(factory, authService);
             try {
                 // deserialize the event into a LoadMoreFollowItemsRequest
                 event = tweeter_shared_1.LoadMoreFollowItemsRequest.fromJSON(event);
+                console.log("LoadMoreFolloweesLambda event: ", event);
                 const [followees, hasMorePages] = yield followService.loadMoreFollowees(event.authToken, event.user, event.pageSize, event.lastItem);
                 let response = {
                     success: true,
                     message: "Load more followees successful",
-                    users: followees.map((user) => user.dto),
+                    users: followees ? followees : [],
                     hasMorePages: hasMorePages,
                 };
                 return response;

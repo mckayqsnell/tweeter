@@ -2,13 +2,15 @@ import { LoadMoreStatusItemsRequest } from "tweeter-shared/dist/model/net/Reques
 import { LoadMoreStatusItemsResponse } from "tweeter-shared/dist/model/net/Response";
 import { StatusService } from "../model/service/StatusService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class LoadMoreFeedItemsLambda {
   static async handler(event: any): Promise<LoadMoreStatusItemsResponse> {
     const factory = DynamoDBDAOFactory.getInstance();
+    const authService = new AuthService(factory);
 
-    const statusService = new StatusService(factory);
-
+    const statusService = new StatusService(factory, authService);
+    
     try {
       event = LoadMoreStatusItemsRequest.fromJSON(event);
 

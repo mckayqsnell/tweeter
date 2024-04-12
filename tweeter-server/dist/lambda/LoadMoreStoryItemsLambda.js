@@ -13,11 +13,13 @@ exports.LoadMoreStoryItemsLambda = void 0;
 const Request_1 = require("tweeter-shared/dist/model/net/Request");
 const StatusService_1 = require("../model/service/StatusService");
 const DynamoDBDAOFactory_1 = require("../model/factory/DynamoDBDAOFactory");
+const AuthService_1 = require("../model/service/AuthService");
 class LoadMoreStoryItemsLambda {
     static handler(event) {
         return __awaiter(this, void 0, void 0, function* () {
             const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
-            const statusService = new StatusService_1.StatusService(factory);
+            const authService = new AuthService_1.AuthService(factory);
+            const statusService = new StatusService_1.StatusService(factory, authService);
             try {
                 // deserialize the event into a LoadMoreStatusItemsRequest
                 event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);

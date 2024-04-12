@@ -22,7 +22,7 @@ import { ClientCommunicator } from "./ClientCommunicator";
 
 export class ServerFacade {
   private SERVER_URL: string =
-    "https://ur1av6d756.execute-api.us-west-2.amazonaws.com/2ndDev";
+    "https://ur1av6d756.execute-api.us-west-2.amazonaws.com/Milestone4aBeta";
 
   private clientCommunicator: ClientCommunicator = new ClientCommunicator(
     this.SERVER_URL

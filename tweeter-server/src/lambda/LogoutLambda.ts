@@ -1,12 +1,13 @@
 import { LogoutRequest, LogoutResponse } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class LogoutLambda {
   static async handler(event: LogoutRequest): Promise<LogoutResponse> {
     const factory = DynamoDBDAOFactory.getInstance();
-
-    const userService = new UserService(factory);
+    const authService = new AuthService(factory);
+    const userService = new UserService(factory, authService);
 
     try {
       await userService.logout(event.authToken);

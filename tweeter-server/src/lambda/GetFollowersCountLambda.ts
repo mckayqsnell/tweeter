@@ -1,19 +1,25 @@
-import { GetFollowCountRequest, GetFollowCountResponse } from "tweeter-shared";
+import { AuthTokenDto, GetFollowCountRequest, GetFollowCountResponse, UserDto } from "tweeter-shared";
 import { FollowService } from "../model/service/FollowService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class GetFollowersCountLambda {
   static async handler(
-    event: GetFollowCountRequest
+    event: any
   ): Promise<GetFollowCountResponse> {
     const factory = DynamoDBDAOFactory.getInstance();
+    const authService = new AuthService(factory);
 
-    const followService = new FollowService(factory);
+    const followService = new FollowService(factory, authService);
+
+    console.log("GetFollowersCountLambda event: ", event);
 
     try {
+      const request = GetFollowCountRequest.fromJSON(event);
+
       const count = await followService.getFollowersCount(
-        event.authToken,
-        event.user
+        request.authToken,
+        request.user
       );
 
       let response = {

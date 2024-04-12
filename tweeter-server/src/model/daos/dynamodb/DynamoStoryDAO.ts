@@ -1,5 +1,6 @@
 import { IStoryDAO } from "../interfaces/IStoryDAO";
+import { DynamoDAO } from "./DynamoDAO";
 
-export class DynamoStoryDAO implements IStoryDAO {
+export class DynamoStoryDAO extends DynamoDAO implements IStoryDAO {
     
 }

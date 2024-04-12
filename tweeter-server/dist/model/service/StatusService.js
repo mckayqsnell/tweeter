@@ -11,8 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatusService = void 0;
 const tweeter_shared_1 = require("tweeter-shared");
-class StatusService {
-    constructor(factory) {
+const BaseService_1 = require("./BaseService");
+class StatusService extends BaseService_1.BaseService {
+    constructor(factory, authService) {
+        super(factory, authService);
         this.feedDAO = factory.getFeedDAO();
         this.storyDAO = factory.getStoryDAO();
     }

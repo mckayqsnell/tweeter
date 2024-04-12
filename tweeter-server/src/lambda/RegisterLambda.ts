@@ -2,15 +2,17 @@ import { AuthenticateResponse } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
 import { RegisterRequest } from "tweeter-shared/dist/model/net/Request";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class RegisterLambda {
   static async handler(event: RegisterRequest): Promise<AuthenticateResponse> {
     const factory = DynamoDBDAOFactory.getInstance();
+    const authService = new AuthService(factory);
 
-    const userService = new UserService(factory);
+    const userService = new UserService(factory, authService);
 
     try {
-      const [user, token] = await userService.register(
+      const [user, authToken] = await userService.register(
         event.firstName,
         event.lastName,
         event.alias,
@@ -21,8 +23,8 @@ export class RegisterLambda {
       let response: AuthenticateResponse = {
         success: true,
         message: "Login successful",
-        user: user ? user.dto : null,
-        token: token ? token.dto : null,
+        user: user ? user : null,
+        token: authToken ? authToken : null,
       };
 
       return response;

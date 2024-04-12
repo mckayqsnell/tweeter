@@ -10,118 +10,168 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FollowService = void 0;
-const tweeter_shared_1 = require("tweeter-shared");
-class FollowService {
-    constructor(factory) {
+const BaseService_1 = require("./BaseService");
+class FollowService extends BaseService_1.BaseService {
+    constructor(factory, authService) {
+        super(factory, authService);
+        this.loadMoreFollowers = (authTokenDto, userDto, pageSize, lastItem) => __awaiter(this, void 0, void 0, function* () {
+            console.log("loadMoreFollowers in follow service");
+            console.log("authTokenDto", authTokenDto);
+            console.log("userDto", userDto);
+            console.log("pageSize", pageSize);
+            console.log("lastItem", lastItem);
+            return this.loadMore(authTokenDto, userDto, pageSize, lastItem, true, this.followDAO.getPageOfFollowers);
+        });
+        this.loadMoreFollowees = (authTokenDto, userDto, pageSize, lastItem) => __awaiter(this, void 0, void 0, function* () {
+            console.log("loadMoreFollowees in follow service");
+            console.log("authTokenDto", authTokenDto);
+            console.log("userDto", userDto);
+            console.log("pageSize", pageSize);
+            console.log("lastItem", lastItem);
+            return this.loadMore(authTokenDto, userDto, pageSize, lastItem, false, this.followDAO.getPageOfFollowees);
+        });
+        this.loadMore = (authTokenDto, userDto, pageSize, lastItem, follower, daoFunction) => __awaiter(this, void 0, void 0, function* () {
+            this.validateRequiredFields([authTokenDto, userDto, pageSize]);
+            try {
+                //validate the authToken
+                const validated = yield this.authService.validateAuthToken(authTokenDto);
+                if (!validated) {
+                    throw new Error("[AuthError] unauthenticated request");
+                }
+                const lastItemAlias = lastItem ? lastItem.alias : undefined; // check if lastItem is present
+                const [follows, hasMore] = yield daoFunction(userDto.alias, pageSize, lastItemAlias);
+                console.log(`follows: ${follows} hasMore: ${hasMore}`);
+                //convert the follows to UserDtos
+                const followsDto = follows.map((follow) => this.followDBToDto(follow, follower));
+                console.log(`followsDto: ${followsDto} hasMore: ${hasMore}`);
+                return [followsDto, hasMore];
+            }
+            catch (error) {
+                console.error(error);
+                throw new Error(`[Internal Server Error] failed to load more: ${error}`);
+            }
+        });
+        this.getIsFollowerStatus = (authTokenDto, userDto, selectedUserDto) => __awaiter(this, void 0, void 0, function* () {
+            console.log("getIsFollowerStatus in follow service");
+            console.log("authTokenDto", authTokenDto);
+            console.log("userDto", userDto);
+            console.log("selectedUserDto", selectedUserDto);
+            this.validateRequiredFields([authTokenDto, userDto, selectedUserDto]);
+            try {
+                //validate the authToken
+                const validated = yield this.authService.validateAuthToken(authTokenDto);
+                if (!validated) {
+                    throw new Error("[AuthError] unauthenticated request");
+                }
+                const alias = yield this.authService.getAlias(authTokenDto);
+                // lookup the user in the database
+                const user = yield this.userDAO.getUser(alias);
+                if (!user) {
+                    throw new Error(`[Bad Request] user ${alias} who wants to getIsFollowerStatus does not exist`);
+                }
+                const selectedUser = yield this.userDAO.getUser(selectedUserDto.alias);
+                if (!selectedUser) {
+                    throw new Error(`[Bad Request] selectedUser for getIsFollowerStatus does not exist`);
+                }
+                const isFollower = yield this.followDAO.getIsFollowerStatus(user, selectedUser);
+                console.log(`isFollower: ${isFollower} for ${selectedUserDto.alias}`);
+                return isFollower;
+            }
+            catch (error) {
+                console.error(error);
+                throw new Error(`[Internal Server Error] failed to get isFollowerStatus: ${error}`);
+            }
+        });
+        this.getFolloweesCount = (authTokenDto, userDto) => __awaiter(this, void 0, void 0, function* () {
+            return this.getFollowCounts(authTokenDto, userDto, (alias) => this.userDAO.getUser(alias), "followees");
+        });
+        this.getFollowersCount = (authTokenDto, userDto) => __awaiter(this, void 0, void 0, function* () {
+            return this.getFollowCounts(authTokenDto, userDto, (alias) => this.userDAO.getUser(alias), "followers");
+        });
+        this.getFollowCounts = (authTokenDto, userDto, daoFunction, operation) => __awaiter(this, void 0, void 0, function* () {
+            console.log("getFollowCounts in follow service");
+            console.log("authTokenDto", authTokenDto);
+            console.log("userDto", userDto);
+            this.validateRequiredFields([authTokenDto, userDto]);
+            try {
+                //validate the authToken
+                const validated = yield this.authService.validateAuthToken(authTokenDto);
+                if (!validated) {
+                    throw new Error("[AuthError] unauthenticated request");
+                }
+                const user = yield daoFunction(userDto.alias);
+                if (!user) {
+                    throw new Error(`[Bad Request] user for getFollowCounts does not exist`);
+                }
+                const count = operation === "followers" ? user.followersCount : user.followeesCount;
+                console.log(`count: ${count} returned for ${userDto.alias}`);
+                return count;
+            }
+            catch (error) {
+                console.error(error);
+                throw new Error(`[Internal Server Error] failed to get follow count: ${error}`);
+            }
+        });
+        this.follow = (authTokenDto, userToFollowDto) => __awaiter(this, void 0, void 0, function* () {
+            return this.unFollowOrFollow(authTokenDto, userToFollowDto, this.followDAO.follow, "follow");
+        });
+        this.unfollow = (authTokenDto, userToUnfollowDto) => __awaiter(this, void 0, void 0, function* () {
+            return this.unFollowOrFollow(authTokenDto, userToUnfollowDto, this.followDAO.unfollow, "unfollow");
+        });
+        this.unFollowOrFollow = (authTokenDto, userToUnfollowDto, daoFunction, operation) => __awaiter(this, void 0, void 0, function* () {
+            this.validateRequiredFields([authTokenDto, userToUnfollowDto]);
+            try {
+                yield this.validateAuthToken(authTokenDto);
+                const alias = yield this.authService.getAlias(authTokenDto);
+                // lookup the user in the database
+                const userdb = yield this.userDAO.getUser(alias);
+                if (!userdb) {
+                    throw new Error(`[Bad Request] user ${alias} who wants to ${operation} does not exist`);
+                }
+                const userToUnfollowOrFollow = yield this.userDAO.getUser(userToUnfollowDto.alias);
+                if (!userToUnfollowOrFollow) {
+                    throw new Error(`[Bad Request] userTo${operation} for ${operation} does not exist`);
+                }
+                if (operation === "follow") {
+                    yield this.userDAO.incrementFolloweesCount(alias);
+                    yield this.userDAO.incrementFollowersCount(userToUnfollowDto.alias);
+                }
+                else {
+                    yield this.userDAO.decrementFolloweesCount(alias);
+                    yield this.userDAO.decrementFollowersCount(userToUnfollowDto.alias);
+                }
+                yield daoFunction(userdb, userToUnfollowOrFollow);
+                // get the updated counts for this user
+                const updatedUser = yield this.userDAO.getUser(alias);
+                const followersCount = updatedUser.followersCount;
+                const followeesCount = updatedUser.followeesCount;
+                return [followersCount, followeesCount];
+            }
+            catch (error) {
+                console.error(error);
+                throw new Error(`[Internal Server Error] failed to ${operation}: ${error}`);
+            }
+        });
+        this.followDBToDto = (followDB, follower) => {
+            if (follower) {
+                return {
+                    alias: followDB.followerAlias,
+                    firstName: followDB.followerFirstName,
+                    imageUrl: followDB.followerImageUrl,
+                    lastName: followDB.followerLastName,
+                };
+            }
+            else {
+                return {
+                    alias: followDB.followeeAlias,
+                    firstName: followDB.followeeFirstName,
+                    imageUrl: followDB.followeeImageUrl,
+                    lastName: followDB.followeeLastName,
+                };
+            }
+        };
         this.followDAO = factory.getFollowDAO();
-    }
-    loadMoreFollowers(authTokenDto, userDto, pageSize, lastItem) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const user = tweeter_shared_1.User.fromDto(userDto);
-            const lastUserItem = tweeter_shared_1.User.fromDto(lastItem);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!user) {
-                throw new Error("[Bad Request] user for loadingFollowers does not exist");
-            }
-            // TODO: Replace with the result of calling the database
-            return tweeter_shared_1.FakeData.instance.getPageOfUsers(lastUserItem, pageSize, user);
-        });
-    }
-    loadMoreFollowees(authTokenDto, userDto, pageSize, lastItem) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const user = tweeter_shared_1.User.fromDto(userDto);
-            const lastUserItem = tweeter_shared_1.User.fromDto(lastItem);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!user) {
-                throw new Error("[Bad Request] user for loadingFollowees does not exist");
-            }
-            // TODO: Replace with the result of calling database
-            return tweeter_shared_1.FakeData.instance.getPageOfUsers(lastUserItem, pageSize, user);
-        });
-    }
-    getIsFollowerStatus(authTokenDto, userDto, selectedUserDto) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const user = tweeter_shared_1.User.fromDto(userDto);
-            const selectedUser = tweeter_shared_1.User.fromDto(selectedUserDto);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!user) {
-                throw new Error("[Bad Request] user for getIsFollowerStatus does not exist");
-            }
-            if (!selectedUser) {
-                throw new Error("[Bad Request] selectedUser for getIsFollowerStatus does not exist");
-            }
-            // TODO: Replace with the result of calling database
-            return tweeter_shared_1.FakeData.instance.isFollower();
-        });
-    }
-    getFolloweesCount(authTokenDto, userDto) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const user = tweeter_shared_1.User.fromDto(userDto);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!user) {
-                throw new Error("[Bad Request] user for getFolloweesCount does not exist");
-            }
-            // TODO: Replace with the result of calling the database
-            return tweeter_shared_1.FakeData.instance.getFolloweesCount(user);
-        });
-    }
-    getFollowersCount(authTokenDto, userDto) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const user = tweeter_shared_1.User.fromDto(userDto);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!user) {
-                throw new Error("[Bad Request] user for getFollowersCount does not exist");
-            }
-            // TODO: Replace with the result of calling the database
-            return tweeter_shared_1.FakeData.instance.getFollowersCount(user);
-        });
-    }
-    follow(authTokenDto, userToFollowDto) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // TODO: Call the the database
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const userToFollow = tweeter_shared_1.User.fromDto(userToFollowDto);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!userToFollow) {
-                throw new Error("[Bad Request] userToFollow for follow does not exist");
-            }
-            let followersCount = yield this.getFollowersCount(authToken, userToFollow);
-            let followeesCount = yield this.getFolloweesCount(authToken, userToFollow);
-            return [followersCount, followeesCount];
-        });
-    }
-    unfollow(authTokenDto, userToUnfollowDto) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // TODO: Call the server
-            const authToken = tweeter_shared_1.AuthToken.fromDto(authTokenDto);
-            const userToUnfollow = tweeter_shared_1.User.fromDto(userToUnfollowDto);
-            if (!authToken) {
-                throw new Error("[AuthError] unauthenticated request");
-            }
-            if (!userToUnfollow) {
-                throw new Error("[Bad Request] userToUnfollow for unfollow does not exist");
-            }
-            let followersCount = yield this.getFollowersCount(authToken, userToUnfollow);
-            let followeesCount = yield this.getFolloweesCount(authToken, userToUnfollow);
-            return [followersCount, followeesCount];
-        });
+        this.userDAO = factory.getUserDAO();
     }
 }
 exports.FollowService = FollowService;

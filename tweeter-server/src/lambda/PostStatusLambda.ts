@@ -2,12 +2,14 @@ import { PostStatusRequest } from "tweeter-shared/dist/model/net/Request";
 import { PostStatusResponse } from "tweeter-shared/dist/model/net/Response";
 import { StatusService } from "../model/service/StatusService";
 import { DynamoDBDAOFactory } from "../model/factory/DynamoDBDAOFactory";
+import { AuthService } from "../model/service/AuthService";
 
 export class PostStatusLambda {
   static async handler(event: any): Promise<PostStatusResponse> {
+    
     const factory = DynamoDBDAOFactory.getInstance();
-
-    const statusService = new StatusService(factory);
+    const authService = new AuthService(factory);
+    const statusService = new StatusService(factory, authService);
 
     try {
       event = PostStatusRequest.fromJSON(event);

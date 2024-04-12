@@ -84,8 +84,6 @@ export class FollowService {
     authToken: AuthToken,
     user: User
   ): Promise<number> {
-    // // TODO: Replace with the result of calling server
-    // return FakeData.instance.getFolloweesCount(user);
 
     const request: GetFollowCountRequest = {
       authToken: authToken,
@@ -129,17 +127,7 @@ export class FollowService {
     authToken: AuthToken,
     userToFollow: User
   ): Promise<[followersCount: number, followeesCount: number]> {
-    // // Pause so we can see the following message. Remove when connected to the server
-    // await new Promise((f) => setTimeout(f, 2000));
-
-    // // TODO: Call the server
-
-    // let followersCount = await this.getFollowersCount(authToken, userToFollow);
-    // let followeesCount = await this.getFolloweesCount(authToken, userToFollow);
-
-    // return [followersCount, followeesCount];
-
-    // Build up a follow/unfollow request object
+    
     const request: FollowOrUnFollowRequest = {
       authToken: authToken,
       userToFollowOrUnFollow: userToFollow
