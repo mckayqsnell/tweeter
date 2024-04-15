@@ -10,9 +10,10 @@ export class LoadMoreFeedItemsLambda {
     const authService = new AuthService(factory);
 
     const statusService = new StatusService(factory, authService);
-    
+
     try {
       event = LoadMoreStatusItemsRequest.fromJSON(event);
+      console.log("LoadMoreFeedItemsLambda event: ", event);
 
       const [feedItems, hasMorePages] = await statusService.loadMoreFeedItems(
         event.authToken,
@@ -24,7 +25,7 @@ export class LoadMoreFeedItemsLambda {
       let response: LoadMoreStatusItemsResponse = {
         success: true,
         message: "Load more feed items successful",
-        statusItems: feedItems.map((feedItem) => feedItem.dto),
+        statusItems: feedItems ? feedItems : [],
         hasMorePages: hasMorePages,
       };
 

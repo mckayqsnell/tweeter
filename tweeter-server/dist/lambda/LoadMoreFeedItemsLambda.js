@@ -26,7 +26,7 @@ class LoadMoreFeedItemsLambda {
                 let response = {
                     success: true,
                     message: "Load more feed items successful",
-                    statusItems: feedItems.map((feedItem) => feedItem.dto),
+                    statusItems: feedItems.map((feedItem) => feedItem),
                     hasMorePages: hasMorePages,
                 };
                 return response;

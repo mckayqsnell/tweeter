@@ -1,29 +1,28 @@
 {
     "FunctionName": "register",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:register:46",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:register:49",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/RegisterLambda.handler",
-    "CodeSize": 30932,
+    "CodeSize": 33669,
     "Description": "",
     "Timeout": 6,
     "MemorySize": 128,
-    "LastModified": "2024-04-12T10:08:21.000+0000",
-    "CodeSha256": "nWUTMurxdxCa6D7U+oyAHTC7aqYEf+7OF7aZca3BPcY=",
-    "Version": "46",
+    "LastModified": "2024-04-15T02:23:16.000+0000",
+    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
+    "Version": "49",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "fbb38372-72bc-4e12-8570-bdfd66304188",
+    "RevisionId": "81e7b434-6811-48fe-9f0e-7a7174994b13",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
             "CodeSize": 19453128
         }
     ],
-    "State": "Pending",
-    "StateReason": "The function is being created.",
-    "StateReasonCode": "Creating",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

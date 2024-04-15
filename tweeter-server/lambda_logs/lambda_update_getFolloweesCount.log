@@ -1,29 +1,28 @@
 {
     "FunctionName": "getFolloweesCount",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getFolloweesCount:39",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getFolloweesCount:42",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/GetFolloweesCountLambda.handler",
-    "CodeSize": 30932,
+    "CodeSize": 33669,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-12T10:08:21.000+0000",
-    "CodeSha256": "nWUTMurxdxCa6D7U+oyAHTC7aqYEf+7OF7aZca3BPcY=",
-    "Version": "39",
+    "LastModified": "2024-04-15T02:23:14.000+0000",
+    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
+    "Version": "42",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "2171170f-4dad-4a9f-9571-389b61337cbf",
+    "RevisionId": "3289e0ec-9f53-4d82-954e-5b8cd8b0a92e",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
             "CodeSize": 19453128
         }
     ],
-    "State": "Pending",
-    "StateReason": "The function is being created.",
-    "StateReasonCode": "Creating",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

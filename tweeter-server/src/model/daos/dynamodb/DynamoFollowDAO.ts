@@ -7,6 +7,7 @@ import {
 import { IFollowDAO } from "../interfaces/IFollowDAO";
 import { DynamoDAO } from "./DynamoDAO";
 import { FollowDB, UserDB } from "../../DatabaseTypes";
+import { UserDto } from "tweeter-shared";
 
 export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
   private static _instance: DynamoFollowDAO;
@@ -44,25 +45,32 @@ export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
         : undefined,
     };
 
-    const data = await this.client.send(new QueryCommand(params));
-    console.log("data from getPageOfFollowees", data);
+    try {
+      const data = await this.client.send(new QueryCommand(params));
+      console.log("data from getPageOfFollowees", data);
 
-    const followDBs = data.Items
-      ? data.Items.map((item: any) => ({
-          followee_handle: item.followee_handle,
-          follower_handle: item.follower_handle,
-          followeeFirstName: item.followeeFirstName,
-          followeeLastName: item.followeeLastName,
-          followeeAlias: item.followeeAlias,
-          followeeImageUrl: item.followeeImageUrl,
-          followerFirstName: item.followerFirstName,
-          followerLastName: item.followerLastName,
-          followerAlias: item.followerAlias,
-          followerImageUrl: item.followerImageUrl,
-        }))
-      : [];
-    console.log("followDBs from getPageOfFollowees", followDBs);
-    return [followDBs, !!data.LastEvaluatedKey];
+      const followDBs = data.Items
+        ? data.Items.map((item: any) => ({
+            followee_handle: item.followee_handle,
+            follower_handle: item.follower_handle,
+            followeeFirstName: item.followeeFirstName,
+            followeeLastName: item.followeeLastName,
+            followeeAlias: item.followeeAlias,
+            followeeImageUrl: item.followeeImageUrl,
+            followerFirstName: item.followerFirstName,
+            followerLastName: item.followerLastName,
+            followerAlias: item.followerAlias,
+            followerImageUrl: item.followerImageUrl,
+          }))
+        : [];
+      console.log("followDBs from getPageOfFollowees", followDBs);
+      console.log("data.LastEvaluatedKey", data.LastEvaluatedKey)
+      console.log(" !!data.LastEvaluatedKey", !!data.LastEvaluatedKey)
+      return [followDBs, !!data.LastEvaluatedKey];
+    } catch (error) {
+      console.error(`Error retrieving followees from the database: ${error}`);
+      throw new Error(`Error retrieving followees from the database: ${error}`);
+    }
   };
 
   public getPageOfFollowers = async (
@@ -91,25 +99,30 @@ export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
         : undefined,
     };
 
-    const data = await this.client.send(new QueryCommand(params));
-    console.log("data from getPageOfFollowers", data);
-    const followDBs = data.Items
-      ? data.Items.map((item: any) => ({
-          followee_handle: item.followee_handle,
-          follower_handle: item.follower_handle,
-          followeeFirstName: item.followeeFirstName,
-          followeeLastName: item.followeeLastName,
-          followeeAlias: item.followeeAlias,
-          followeeImageUrl: item.followeeImageUrl,
-          followerFirstName: item.followerFirstName,
-          followerLastName: item.followerLastName,
-          followerAlias: item.followerAlias,
-          followerImageUrl: item.followerImageUrl,
-        }))
-      : [];
+    try {
+      const data = await this.client.send(new QueryCommand(params));
+      console.log("data from getPageOfFollowers", data);
+      const followDBs = data.Items
+        ? data.Items.map((item: any) => ({
+            followee_handle: item.followee_handle,
+            follower_handle: item.follower_handle,
+            followeeFirstName: item.followeeFirstName,
+            followeeLastName: item.followeeLastName,
+            followeeAlias: item.followeeAlias,
+            followeeImageUrl: item.followeeImageUrl,
+            followerFirstName: item.followerFirstName,
+            followerLastName: item.followerLastName,
+            followerAlias: item.followerAlias,
+            followerImageUrl: item.followerImageUrl,
+          }))
+        : [];
 
-    console.log("followDBs from getPageOfFollowers", followDBs);
-    return [followDBs, !!data.LastEvaluatedKey];
+      console.log("followDBs from getPageOfFollowers", followDBs);
+      return [followDBs, !!data.LastEvaluatedKey];
+    } catch (error) {
+      console.error(`Error retrieving followers from the database: ${error}`);
+      throw new Error(`Error retrieving followers from the database: ${error}`);
+    }
   };
 
   public follow = async (
@@ -176,7 +189,10 @@ export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
     }
   };
 
-  public getIsFollowerStatus = async (user: UserDB, selectedUser: UserDB): Promise<boolean> => {
+  public getIsFollowerStatus = async (
+    user: UserDB,
+    selectedUser: UserDB
+  ): Promise<boolean> => {
     const params: QueryCommandInput = {
       TableName: "follows",
       KeyConditionExpression: "follower_handle = :fh and followee_handle = :sh",
@@ -198,5 +214,36 @@ export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
         `Error getting isFollowerStatus between ${user.alias} and ${selectedUser.alias} in the database: ${error}`
       );
     }
-  }
+  };
+
+  public getAllFollowersOfAUser = async (alias: string): Promise<UserDto[]> => {
+    const params: QueryCommandInput = {
+      TableName: "follows",
+      IndexName: "follows_index",
+      KeyConditionExpression: "followee_handle = :fh",
+      ExpressionAttributeValues: {
+        ":fh": alias,
+      },
+    };
+
+    try {
+      const data = await this.client.send(new QueryCommand(params));
+      console.log("data from getAllFollowersOfAUser", data);
+      return data.Items
+        ? data.Items.map((item: any) => ({
+            alias: item.follower_handle,
+            firstName: item.followerFirstName,
+            lastName: item.followerLastName,
+            imageUrl: item.followerImageUrl,
+          }))
+        : [];
+    } catch (error) {
+      console.error(
+        `Error getting all followers of ${alias} in the database: ${error}`
+      );
+      throw new Error(
+        `Error getting all followers of ${alias} in the database: ${error}`
+      );
+    }
+  };
 }

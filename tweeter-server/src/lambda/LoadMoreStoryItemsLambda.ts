@@ -25,7 +25,7 @@ export class LoadMoreStoryItemsLambda {
       let response: LoadMoreStatusItemsResponse = {
         success: true,
         message: "Load more story items successful",
-        statusItems: storyItems.map((storyItem) => storyItem.dto),
+        statusItems: storyItems ? storyItems : [],
         hasMorePages: hasMorePages,
       };
       return response;

@@ -1,29 +1,28 @@
 {
     "FunctionName": "getIsFollower",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getIsFollower:40",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getIsFollower:43",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/GetIsFollowerLambda.handler",
-    "CodeSize": 30932,
+    "CodeSize": 33669,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-12T10:08:21.000+0000",
-    "CodeSha256": "nWUTMurxdxCa6D7U+oyAHTC7aqYEf+7OF7aZca3BPcY=",
-    "Version": "40",
+    "LastModified": "2024-04-15T02:23:13.000+0000",
+    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
+    "Version": "43",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "096b00f7-85ba-4ae0-a825-5a216c5d0e3e",
+    "RevisionId": "4923fd3b-5308-4f4a-a673-aeb8171ea624",
     "Layers": [
         {
             "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
             "CodeSize": 19453128
         }
     ],
-    "State": "Pending",
-    "StateReason": "The function is being created.",
-    "StateReasonCode": "Creating",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

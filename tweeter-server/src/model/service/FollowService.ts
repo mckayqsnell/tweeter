@@ -87,6 +87,7 @@ export class FollowService extends BaseService {
         throw new Error("[AuthError] unauthenticated request");
       }
       const lastItemAlias = lastItem ? lastItem.alias : undefined; // check if lastItem is present
+      console.log(`lastItemAlias: ${lastItemAlias}`)
       const [follows, hasMore] = await daoFunction(
         userDto.alias,
         pageSize,
