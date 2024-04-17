@@ -21,7 +21,13 @@ export class DynamoAuthTokenDAO extends DynamoDAO implements IAuthTokenDAO {
     try {
       const response = await this.client.send(new GetCommand(params));
       console.log(`Successfully retrieved token ${token} from the database`);
-      return response.Item as AuthTokenDB;
+
+      console.log("response.Item", response.Item)
+
+      const authtoken = response.Item as AuthTokenDB;
+      console.log("authtoken", authtoken)
+
+      return authtoken;
     } catch (error) {
       console.error(
         `Error retrieving token ${token} from the database: ${error}`

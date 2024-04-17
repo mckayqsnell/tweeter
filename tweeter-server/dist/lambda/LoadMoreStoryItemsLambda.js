@@ -20,14 +20,16 @@ class LoadMoreStoryItemsLambda {
             const factory = DynamoDBDAOFactory_1.DynamoDBDAOFactory.getInstance();
             const authService = new AuthService_1.AuthService(factory);
             const statusService = new StatusService_1.StatusService(factory, authService);
+            console.log("Received event:", JSON.stringify(event, null, 2));
             try {
                 // deserialize the event into a LoadMoreStatusItemsRequest
                 event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
+                console.log("Deserialized event:", JSON.stringify(event, null, 2));
                 const [storyItems, hasMorePages] = yield statusService.loadMoreStoryItems(event.authToken, event.user, event.pageSize, event.lastItem);
                 let response = {
                     success: true,
                     message: "Load more story items successful",
-                    statusItems: storyItems.map((storyItem) => storyItem),
+                    statusItems: storyItems ? storyItems : [],
                     hasMorePages: hasMorePages,
                 };
                 return response;

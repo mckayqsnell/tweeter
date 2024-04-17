@@ -1,0 +1,45 @@
+{
+    "FunctionName": "UpdateFeed",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:UpdateFeed:13",
+    "Runtime": "nodejs20.x",
+    "Role": "arn:aws:iam::108857565390:role/cs340lambda",
+    "Handler": "dist/lambda/UpdateFeeds.handler",
+    "CodeSize": 42661,
+    "Description": "",
+    "Timeout": 120,
+    "MemorySize": 128,
+    "LastModified": "2024-04-17T13:40:14.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "13",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "c63c3c9c-365c-4273-9380-c858dd024135",
+    "Layers": [
+        {
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
+        }
+    ],
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
+    "PackageType": "Zip",
+    "Architectures": [
+        "x86_64"
+    ],
+    "EphemeralStorage": {
+        "Size": 1024
+    },
+    "SnapStart": {
+        "ApplyOn": "None",
+        "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+        "RuntimeVersionArn": "arn:aws:lambda:us-west-2::runtime:ac02783c3092553c14c6c78e6250233bcae8408cf999df05d9ee7c422e5718e3"
+    },
+    "LoggingConfig": {
+        "LogFormat": "Text",
+        "LogGroup": "/aws/lambda/UpdateFeed"
+    }
+}

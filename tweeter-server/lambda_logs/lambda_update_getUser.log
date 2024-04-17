@@ -1,28 +1,29 @@
 {
     "FunctionName": "getUser",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getUser:49",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:getUser:60",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/GetUserLambda.handler",
-    "CodeSize": 33669,
+    "CodeSize": 42661,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-15T02:23:16.000+0000",
-    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
-    "Version": "49",
+    "LastModified": "2024-04-17T13:40:18.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "60",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "985cebe7-02e7-4235-b54a-51a0ec3e8a29",
+    "RevisionId": "88ef7533-2834-417b-a13c-ac865cd6913e",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
-            "CodeSize": 19453128
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
         }
     ],
-    "State": "Active",
-    "LastUpdateStatus": "Successful",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

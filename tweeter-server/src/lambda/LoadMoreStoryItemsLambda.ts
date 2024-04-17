@@ -11,9 +11,12 @@ export class LoadMoreStoryItemsLambda {
 
     const statusService = new StatusService(factory, authService);
 
+    console.log("Received event:", JSON.stringify(event, null, 2));
+
     try {
       // deserialize the event into a LoadMoreStatusItemsRequest
       event = LoadMoreStatusItemsRequest.fromJSON(event);
+      console.log("Deserialized event:", JSON.stringify(event, null, 2));
 
       const [storyItems, hasMorePages] = await statusService.loadMoreStoryItems(
         event.authToken,

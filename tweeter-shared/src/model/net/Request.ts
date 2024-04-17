@@ -148,39 +148,41 @@ export class LoadMoreStatusItemsRequest implements TweeterRequest {
   }
 
   public static fromJSON(json: any): LoadMoreStatusItemsRequest {
+    // Handle both underscore and camelCase formats for authToken and user
+    let authTokenJson = json.authToken || json._authToken || {};
+    let userJson = json.user || json._user || {};
+    let lastItemJson = json.lastItem || json._lastItem || null;
+
     let authToken = new AuthToken(
-      json.authToken._token,
-      json.authToken._timestamp
+      authTokenJson.token || authTokenJson._token,
+      authTokenJson.timestamp || authTokenJson._timestamp
     );
     let user = new User(
-      json.user._firstName,
-      json.user._lastName,
-      json.user._alias,
-      json.user._imageUrl
+      userJson.firstName || userJson._firstName,
+      userJson.lastName || userJson._lastName,
+      userJson.alias || userJson._alias,
+      userJson.imageUrl || userJson._imageUrl
     );
 
     let lastItem = null;
-
-    if (json.lastItem) {
-      // Correctly deserialize the user within lastItem
+    if (lastItemJson) {
       let lastItemUser = new User(
-        json.lastItem._user._firstName,
-        json.lastItem._user._lastName,
-        json.lastItem._user._alias,
-        json.lastItem._user._imageUrl
+        lastItemJson.user?._firstName || lastItemJson._user?._firstName,
+        lastItemJson.user?._lastName || lastItemJson._user?._lastName,
+        lastItemJson.user?._alias || lastItemJson._user?._alias,
+        lastItemJson.user?._imageUrl || lastItemJson._user?._imageUrl
       );
-
-      // Now use lastItemUser
       lastItem = new Status(
-        json.lastItem._post,
-        lastItemUser, // Use the deserialized lastItemUser
-        json.lastItem._timestamp
+        lastItemJson.post || lastItemJson._post,
+        lastItemUser,
+        lastItemJson.timestamp || lastItemJson._timestamp
       );
     }
+
     return new LoadMoreStatusItemsRequest(
       authToken,
       user,
-      json.pageSize,
+      json.pageSize || json._pageSize,
       lastItem
     );
   }

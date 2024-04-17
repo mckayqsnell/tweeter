@@ -29,7 +29,7 @@ export class PostStatusPresenter extends Presenter {
   ) {
     this.view.displayInfoMessage("Posting status...", 0);
 
-    this.doFailureReportingOperation(async () => {
+    await this.doFailureReportingOperation(async () => {
       let status = new Status(post, currentUser!, Date.now());
 
       await this.statusService.postStatus(authToken!, status);

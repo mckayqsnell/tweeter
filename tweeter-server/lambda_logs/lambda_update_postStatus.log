@@ -1,28 +1,29 @@
 {
     "FunctionName": "postStatus",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:postStatus:50",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:postStatus:61",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/PostStatusLambda.handler",
-    "CodeSize": 33669,
+    "CodeSize": 42661,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-15T02:23:17.000+0000",
-    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
-    "Version": "50",
+    "LastModified": "2024-04-17T13:40:15.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "61",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "a48dcce9-dc7d-458a-98f4-ff27801ffcf0",
+    "RevisionId": "821a0c7f-ff02-483c-83a4-eb0f86d01d17",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
-            "CodeSize": 19453128
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
         }
     ],
-    "State": "Active",
-    "LastUpdateStatus": "Successful",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

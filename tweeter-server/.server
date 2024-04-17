@@ -14,6 +14,8 @@ getIsFollower
 loadMoreFollowees
 logout
 unfollow
+PostUpdateFeedMessages
+UpdateFeed
 "
 LAMBDALAYER_ARN='arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:1'
 S3_KEY="lambda-layers/nodejs.zip"

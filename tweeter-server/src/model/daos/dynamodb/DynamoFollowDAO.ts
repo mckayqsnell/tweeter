@@ -51,21 +51,21 @@ export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
 
       const followDBs = data.Items
         ? data.Items.map((item: any) => ({
-            followee_handle: item.followee_handle,
-            follower_handle: item.follower_handle,
-            followeeFirstName: item.followeeFirstName,
-            followeeLastName: item.followeeLastName,
-            followeeAlias: item.followeeAlias,
-            followeeImageUrl: item.followeeImageUrl,
-            followerFirstName: item.followerFirstName,
-            followerLastName: item.followerLastName,
-            followerAlias: item.followerAlias,
-            followerImageUrl: item.followerImageUrl,
+            followee_handle: item.followee_handle || "",
+            follower_handle: item.follower_handle || "",
+            followeeFirstName: item.followeeFirstName || "",
+            followeeLastName: item.followeeLastName || "",
+            followeeAlias: item.followeeAlias || "",
+            followeeImageUrl: item.followeeImageUrl || "",
+            followerFirstName: item.followerFirstName || "",
+            followerLastName: item.followerLastName || "",
+            followerAlias: item.followerAlias || "",
+            followerImageUrl: item.followerImageUrl || "",
           }))
         : [];
       console.log("followDBs from getPageOfFollowees", followDBs);
-      console.log("data.LastEvaluatedKey", data.LastEvaluatedKey)
-      console.log(" !!data.LastEvaluatedKey", !!data.LastEvaluatedKey)
+      console.log("data.LastEvaluatedKey", data.LastEvaluatedKey);
+      console.log(" !!data.LastEvaluatedKey", !!data.LastEvaluatedKey);
       return [followDBs, !!data.LastEvaluatedKey];
     } catch (error) {
       console.error(`Error retrieving followees from the database: ${error}`);
@@ -78,10 +78,6 @@ export class DynamoFollowDAO extends DynamoDAO implements IFollowDAO {
     pageSize: number,
     lastFollowerHandle?: string // last follower handle from the previous page
   ): Promise<[FollowDB[], boolean]> => {
-    console.log("getPageOfFollowees");
-    console.log("followerHandle", followeeHandle);
-    console.log("pageSize", pageSize);
-    console.log("lastFolloweeHandle", lastFollowerHandle);
 
     const params = {
       TableName: "follows",

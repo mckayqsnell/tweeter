@@ -43,9 +43,14 @@ class DynamoFeedDAO extends DynamoDAO_1.DynamoDAO {
             }
         });
         this.postFeedItems = (feedDBs) => __awaiter(this, void 0, void 0, function* () {
+            console.log("feedDBs", feedDBs);
+            if (feedDBs.length === 0) {
+                console.log("No feed items to post");
+                return;
+            }
             const params = {
                 RequestItems: {
-                    "feed": feedDBs.map((item) => ({
+                    feed: feedDBs.map((item) => ({
                         PutRequest: {
                             Item: item,
                         },
@@ -53,11 +58,33 @@ class DynamoFeedDAO extends DynamoDAO_1.DynamoDAO {
                 },
             };
             try {
-                yield this.client.send(new lib_dynamodb_1.BatchWriteCommand(params));
+                const resp = yield this.client.send(new lib_dynamodb_1.BatchWriteCommand(params));
+                yield this.handleUnprocessedItems(resp, params);
             }
             catch (error) {
                 console.error(`Batch write failed: ${error}`);
                 throw new Error(`Batch write failed: ${error}`);
+            }
+        });
+    }
+    handleUnprocessedItems(resp, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (resp.UnprocessedItems &&
+                Object.keys(resp.UnprocessedItems).length > 0) {
+                let delay = 50; // Start with a 50 ms delay
+                while (Object.keys(resp.UnprocessedItems).length > 0) {
+                    console.log(`Delaying for ${delay}ms to retry unprocessed items.`);
+                    yield new Promise((resolve) => setTimeout(resolve, delay));
+                    delay *= 2; // Exponential backoff
+                    console.log(`Retrying ${Object.keys(resp.UnprocessedItems.feed).length} unprocessed items.`);
+                    params.RequestItems = resp.UnprocessedItems;
+                    resp = yield this.client.send(new lib_dynamodb_1.BatchWriteCommand(params));
+                    if (!resp.UnprocessedItems ||
+                        Object.keys(resp.UnprocessedItems).length === 0) {
+                        console.log("All items processed successfully.");
+                        break;
+                    }
+                }
             }
         });
     }

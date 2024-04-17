@@ -14,17 +14,20 @@ import { BaseService } from "./BaseService";
 import { AuthService } from "./AuthService";
 import { FeedDB, FollowDB, StoryDB } from "../DatabaseTypes";
 import { IFollowDAO } from "../daos/interfaces/IFollowDAO";
+import { SQSSender } from "../sqs/SQSSender";
+
+const POSTSTATUSQUEUEURL =
+  "https://sqs.us-west-2.amazonaws.com/108857565390/postStatusQueue";
 
 export class StatusService extends BaseService {
   private feedDAO: IFeedDAO;
   private storyDAO: IStoryDAO;
-  private followDAO: IFollowDAO;
+  private sqsClient = new SQSSender(POSTSTATUSQUEUEURL);
 
   constructor(factory: IDAOFactory, authService: AuthService) {
     super(factory, authService);
     this.feedDAO = factory.getFeedDAO();
     this.storyDAO = factory.getStoryDAO();
-    this.followDAO = factory.getFollowDAO();
   }
 
   public async loadMoreStoryItems(
@@ -128,44 +131,24 @@ export class StatusService extends BaseService {
       await this.storyDAO.postStoryItem(newStatusStoryDB);
 
       // update the feed of everyone who follows that user
-      // get all the followers of that user
-      const [followers, hasMore] = await this.followDAO.getPageOfFollowers(
-        newStatusDto.user!.alias,
-        20, // this will change
-        undefined
-      );
-      console.log(`followers of ${newStatusDto.user!.alias}: ${followers}`);
-
-      // post to the feed of each follower
-      const feedUpdates = followers.map((follower: FollowDB) => ({
-        reciever_alias: follower.followerAlias,
+      // Milestone 4b
+      // construct the message for SQS
+      const message = {
+        senderAlias: newStatusDto.user!.alias, // alias of the user who posted the status
         timestamp: newStatusDto.timestamp,
         post: newStatusDto.post,
-        sender_alias: newStatusDto.user!.alias,
-        sender_firstName: newStatusDto.user!.firstName,
-        sender_lastName: newStatusDto.user!.lastName,
-        sender_imageUrl: newStatusDto.user!.imageUrl,
-      }));
+        senderFirstName: newStatusDto.user!.firstName,
+        senderLastName: newStatusDto.user!.lastName,
+        senderImageUrl: newStatusDto.user!.imageUrl,
+      };
 
-      console.log(`feedUpdates: ${feedUpdates}`)
-
-      // FIXME: Milestone4b --> this isn't efficent and will change.
-      // post to the feed of each follower
-      await this.batchWriteFeedUpdates(feedUpdates);
-
+      await this.sqsClient.sendMessage(JSON.stringify(message));
+      console.log(`message sent to SQS: ${message}`)
     } catch (error) {
       console.error(error);
       throw new Error(
         `[Internal Server Error] failed to post status: ${error}`
       );
-    }
-  }
-
-  private async batchWriteFeedUpdates(feedUpdates: FeedDB[]) {
-    const BATCH_SIZE = 25;
-    for (let i = 0; i < feedUpdates.length; i += BATCH_SIZE) {
-      const batch = feedUpdates.slice(i, i + BATCH_SIZE);
-      await this.feedDAO.postFeedItems(batch);
     }
   }
 

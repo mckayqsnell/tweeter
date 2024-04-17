@@ -43,6 +43,7 @@ export class AuthService {
     
     try {
       const authTokenfromDb = await this.AuthTokenDAO.getToken(authToken.token);
+      console.log(`Validating token ${authTokenfromDb} from the database`)
       if(!authTokenfromDb) {
         console.log(`Token ${authToken.token} not found in the database`)
       } else {

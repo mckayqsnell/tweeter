@@ -39,6 +39,7 @@ class FollowService extends BaseService_1.BaseService {
                     throw new Error("[AuthError] unauthenticated request");
                 }
                 const lastItemAlias = lastItem ? lastItem.alias : undefined; // check if lastItem is present
+                console.log(`lastItemAlias: ${lastItemAlias}`);
                 const [follows, hasMore] = yield daoFunction(userDto.alias, pageSize, lastItemAlias);
                 console.log(`follows: ${follows} hasMore: ${hasMore}`);
                 //convert the follows to UserDtos

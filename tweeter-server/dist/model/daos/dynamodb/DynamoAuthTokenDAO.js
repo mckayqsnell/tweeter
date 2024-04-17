@@ -29,7 +29,10 @@ class DynamoAuthTokenDAO extends DynamoDAO_1.DynamoDAO {
             try {
                 const response = yield this.client.send(new lib_dynamodb_1.GetCommand(params));
                 console.log(`Successfully retrieved token ${token} from the database`);
-                return response.Item;
+                console.log("response.Item", response.Item);
+                const authtoken = response.Item;
+                console.log("authtoken", authtoken);
+                return authtoken;
             }
             catch (error) {
                 console.error(`Error retrieving token ${token} from the database: ${error}`);

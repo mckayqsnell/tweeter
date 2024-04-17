@@ -11,14 +11,21 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.550.0",
+    "@aws-sdk/client-sqs": "^3.556.0",
     "@aws-sdk/lib-dynamodb": "^3.549.0",
+    "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1595.0",
     "bcryptjs": "^2.4.3",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
     "moment": "^2.29.4",
     "tweeter-shared": "file:../tweeter-shared",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6"
+    "@types/aws-lambda": "^8.10.137",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/crypto-js": "^4.2.2"
   }
 }

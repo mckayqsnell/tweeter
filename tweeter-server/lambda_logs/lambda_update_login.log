@@ -1,28 +1,29 @@
 {
     "FunctionName": "login",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:login:50",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:login:61",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/LoginLambda.handler",
-    "CodeSize": 33669,
+    "CodeSize": 42661,
     "Description": "",
     "Timeout": 6,
     "MemorySize": 128,
-    "LastModified": "2024-04-15T02:23:16.000+0000",
-    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
-    "Version": "50",
+    "LastModified": "2024-04-17T13:40:14.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "61",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "58dda973-60f5-48d2-bcef-72ac25fc6d51",
+    "RevisionId": "e4be0e6e-7334-461e-8630-4fffc4641f05",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
-            "CodeSize": 19453128
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
         }
     ],
-    "State": "Active",
-    "LastUpdateStatus": "Successful",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

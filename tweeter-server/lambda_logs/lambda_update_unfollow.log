@@ -1,28 +1,29 @@
 {
     "FunctionName": "unfollow",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:unfollow:43",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:unfollow:54",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/UnFollowLambda.handler",
-    "CodeSize": 33669,
+    "CodeSize": 42661,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-15T02:23:16.000+0000",
-    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
-    "Version": "43",
+    "LastModified": "2024-04-17T13:40:15.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "54",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "4f0de258-c1df-402f-9bbc-faa629101b15",
+    "RevisionId": "8d550d87-bf86-4811-8791-fc9618d4560a",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
-            "CodeSize": 19453128
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
         }
     ],
-    "State": "Active",
-    "LastUpdateStatus": "Successful",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

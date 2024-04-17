@@ -11,9 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatusService = void 0;
 const BaseService_1 = require("./BaseService");
+const SQSSender_1 = require("../sqs/SQSSender");
+const POSTSTATUSQUEUEURL = "https://sqs.us-west-2.amazonaws.com/108857565390/postStatusQueue";
 class StatusService extends BaseService_1.BaseService {
     constructor(factory, authService) {
         super(factory, authService);
+        this.sqsClient = new SQSSender_1.SQSSender(POSTSTATUSQUEUEURL);
         this.loadMoreFeedItems = (authTokenDto, userDto, pageSize, lastItem) => __awaiter(this, void 0, void 0, function* () {
             this.validateRequiredFields([authTokenDto, userDto, pageSize]);
             try {
@@ -82,7 +85,6 @@ class StatusService extends BaseService_1.BaseService {
         };
         this.feedDAO = factory.getFeedDAO();
         this.storyDAO = factory.getStoryDAO();
-        this.followDAO = factory.getFollowDAO();
     }
     loadMoreStoryItems(authTokeDto, userDto, pageSize, lastItemDto) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -120,36 +122,22 @@ class StatusService extends BaseService_1.BaseService {
                 const newStatusStoryDB = this.storyDtoToStoryDB(newStatusDto);
                 yield this.storyDAO.postStoryItem(newStatusStoryDB);
                 // update the feed of everyone who follows that user
-                // get all the followers of that user
-                const [followers, hasMore] = yield this.followDAO.getPageOfFollowers(newStatusDto.user.alias, 20, undefined);
-                console.log(`followers of ${newStatusDto.user.alias}: ${followers}`);
-                // post to the feed of each follower
-                const feedUpdates = followers.map((follower) => ({
-                    reciever_alias: follower.followerAlias, // Assuming 'alias' field exists in follower object
+                // Milestone 4b
+                // construct the message for SQS
+                const message = {
+                    senderAlias: newStatusDto.user.alias, // alias of the user who posted the status
                     timestamp: newStatusDto.timestamp,
                     post: newStatusDto.post,
-                    sender_alias: newStatusDto.user.alias,
-                    sender_firstName: newStatusDto.user.firstName,
-                    sender_lastName: newStatusDto.user.lastName,
-                    sender_imageUrl: newStatusDto.user.imageUrl,
-                }));
-                console.log(`feedUpdates: ${feedUpdates}`);
-                // FIXME: Milestone4b --> this isn't efficent and will change.
-                // post to the feed of each follower
-                yield this.batchWriteFeedUpdates(feedUpdates);
+                    senderFirstName: newStatusDto.user.firstName,
+                    senderLastName: newStatusDto.user.lastName,
+                    senderImageUrl: newStatusDto.user.imageUrl,
+                };
+                yield this.sqsClient.sendMessage(JSON.stringify(message));
+                console.log(`message sent to SQS: ${message}`);
             }
             catch (error) {
                 console.error(error);
                 throw new Error(`[Internal Server Error] failed to post status: ${error}`);
-            }
-        });
-    }
-    batchWriteFeedUpdates(feedUpdates) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const BATCH_SIZE = 25;
-            for (let i = 0; i < feedUpdates.length; i += BATCH_SIZE) {
-                const batch = feedUpdates.slice(i, i + BATCH_SIZE);
-                yield this.feedDAO.postFeedItems(batch);
             }
         });
     }

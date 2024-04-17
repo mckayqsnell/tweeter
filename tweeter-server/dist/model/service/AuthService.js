@@ -59,6 +59,7 @@ class AuthService {
             }
             try {
                 const authTokenfromDb = yield this.AuthTokenDAO.getToken(authToken.token);
+                console.log(`Validating token ${authTokenfromDb} from the database`);
                 if (!authTokenfromDb) {
                     console.log(`Token ${authToken.token} not found in the database`);
                 }

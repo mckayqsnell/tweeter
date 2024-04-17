@@ -40,19 +40,21 @@ class DynamoFollowDAO extends DynamoDAO_1.DynamoDAO {
                 console.log("data from getPageOfFollowees", data);
                 const followDBs = data.Items
                     ? data.Items.map((item) => ({
-                        followee_handle: item.followee_handle,
-                        follower_handle: item.follower_handle,
-                        followeeFirstName: item.followeeFirstName,
-                        followeeLastName: item.followeeLastName,
-                        followeeAlias: item.followeeAlias,
-                        followeeImageUrl: item.followeeImageUrl,
-                        followerFirstName: item.followerFirstName,
-                        followerLastName: item.followerLastName,
-                        followerAlias: item.followerAlias,
-                        followerImageUrl: item.followerImageUrl,
+                        followee_handle: item.followee_handle || "",
+                        follower_handle: item.follower_handle || "",
+                        followeeFirstName: item.followeeFirstName || "",
+                        followeeLastName: item.followeeLastName || "",
+                        followeeAlias: item.followeeAlias || "",
+                        followeeImageUrl: item.followeeImageUrl || "",
+                        followerFirstName: item.followerFirstName || "",
+                        followerLastName: item.followerLastName || "",
+                        followerAlias: item.followerAlias || "",
+                        followerImageUrl: item.followerImageUrl || "",
                     }))
                     : [];
                 console.log("followDBs from getPageOfFollowees", followDBs);
+                console.log("data.LastEvaluatedKey", data.LastEvaluatedKey);
+                console.log(" !!data.LastEvaluatedKey", !!data.LastEvaluatedKey);
                 return [followDBs, !!data.LastEvaluatedKey];
             }
             catch (error) {
@@ -62,10 +64,6 @@ class DynamoFollowDAO extends DynamoDAO_1.DynamoDAO {
         });
         this.getPageOfFollowers = (followeeHandle, pageSize, lastFollowerHandle // last follower handle from the previous page
         ) => __awaiter(this, void 0, void 0, function* () {
-            console.log("getPageOfFollowees");
-            console.log("followerHandle", followeeHandle);
-            console.log("pageSize", pageSize);
-            console.log("lastFolloweeHandle", lastFollowerHandle);
             const params = {
                 TableName: "follows",
                 IndexName: "follows_index",

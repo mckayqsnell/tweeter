@@ -1,28 +1,29 @@
 {
     "FunctionName": "loadMoreFeedItems",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:loadMoreFeedItems:49",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:loadMoreFeedItems:60",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/LoadMoreFeedItemsLambda.handler",
-    "CodeSize": 33669,
+    "CodeSize": 42661,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-15T02:23:16.000+0000",
-    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
-    "Version": "49",
+    "LastModified": "2024-04-17T13:40:14.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "60",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "61797bfa-01e5-433b-acbf-1266a166e392",
+    "RevisionId": "e647c785-5af7-43ff-983d-acef1fb4f60c",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
-            "CodeSize": 19453128
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
         }
     ],
-    "State": "Active",
-    "LastUpdateStatus": "Successful",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"

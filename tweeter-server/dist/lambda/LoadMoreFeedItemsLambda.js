@@ -22,11 +22,12 @@ class LoadMoreFeedItemsLambda {
             const statusService = new StatusService_1.StatusService(factory, authService);
             try {
                 event = Request_1.LoadMoreStatusItemsRequest.fromJSON(event);
+                console.log("LoadMoreFeedItemsLambda event: ", event);
                 const [feedItems, hasMorePages] = yield statusService.loadMoreFeedItems(event.authToken, event.user, event.pageSize, event.lastItem);
                 let response = {
                     success: true,
                     message: "Load more feed items successful",
-                    statusItems: feedItems.map((feedItem) => feedItem),
+                    statusItems: feedItems ? feedItems : [],
                     hasMorePages: hasMorePages,
                 };
                 return response;

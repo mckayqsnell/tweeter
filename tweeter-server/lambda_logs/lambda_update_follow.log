@@ -1,28 +1,29 @@
 {
     "FunctionName": "follow",
-    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:follow:42",
+    "FunctionArn": "arn:aws:lambda:us-west-2:108857565390:function:follow:53",
     "Runtime": "nodejs20.x",
     "Role": "arn:aws:iam::108857565390:role/cs340lambda",
     "Handler": "dist/lambda/FollowLambda.handler",
-    "CodeSize": 33669,
+    "CodeSize": 42661,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2024-04-15T02:23:15.000+0000",
-    "CodeSha256": "q/pMa598R/jPXhJ2Pqbiy8OuSDkn/K5o5Wt0t0y9lIM=",
-    "Version": "42",
+    "LastModified": "2024-04-17T13:40:14.000+0000",
+    "CodeSha256": "eklV9wPLyMQlMUi+CON0cxDPGT4JvlRpjCKvzXO9sXg=",
+    "Version": "53",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "c25adb62-d1e2-45ee-89e9-10be6f9a4662",
+    "RevisionId": "e53c10ca-1ed0-48ae-9abd-74339a48b0fb",
     "Layers": [
         {
-            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:28",
-            "CodeSize": 19453128
+            "Arn": "arn:aws:lambda:us-west-2:108857565390:layer:tweeter_dependencies:30",
+            "CodeSize": 20830850
         }
     ],
-    "State": "Active",
-    "LastUpdateStatus": "Successful",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
     "PackageType": "Zip",
     "Architectures": [
         "x86_64"
